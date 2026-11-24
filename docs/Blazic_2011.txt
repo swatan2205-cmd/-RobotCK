@@ -1,0 +1,644 @@
+                                                             Robotics and Autonomous Systems 59 (2011) 1001–1007
+
+
+
+                                                           Contents lists available at SciVerse ScienceDirect
+
+
+                                                    Robotics and Autonomous Systems
+                                                          journal homepage: www.elsevier.com/locate/robot
+
+
+
+
+A novel trajectory-tracking control law for wheeled mobile robots
+Sašo Blažič ∗
+University of Ljubljana, Faculty of Electrical Engineering, Tržaška 25, Ljubljana, Slovenia
+
+
+
+article               info                                abstract
+Article history:                                          In this paper a novel kinematic model is proposed where the transformation between the robot posture
+Received 7 April 2011                                     and the system state is bijective. A nonlinear control law is constructed in the Lyapunov stability analysis
+Received in revised form                                  framework. This control law achieves a global asymptotic stability of the system based on the usual
+7 June 2011
+                                                          requirements for reference velocities. The control law is extensively analysed and compared to some
+Accepted 17 June 2011
+Available online 25 June 2011
+                                                          existing, globally stable control laws.
+                                                                                                                              © 2011 Elsevier B.V. All rights reserved.
+Keywords:
+Mobile robot
+Kinematic model
+Lyapunov stability
+Error model
+
+
+
+
+1. Introduction                                                                               as PID [14], Lyapunov-based nonlinear controllers [15], adaptive
+                                                                                              controllers [2], model-based predictive controllers [16], fuzzy
+   The problem of the control of nonholonomic systems has at-                                 controllers [17–19], fuzzy neural networks [20], etc. Very often
+tracted numerous investigations in the past. A thoroughly stud-                               the fuzzy controllers take care of the high-level control [21] while
+ied case, with great practical significance, is the wheeled mobile                            in some cases they are implemented on chips or other industrial
+robot with a kinematic model similar to a unicycle [1]. The dif-                              hardware [22,23]. Some approaches only guarantee local stability,
+ferentially driven mobile robots that are very common in practical                            while others also ensure global stability and global convergence
+applications also have the same kinematic model. Although many                                under certain assumptions.
+researchers coped with the more difficult problem of stabilising                                  It is very important to find a (kinematic) control law that pro-
+dynamic models for different types of mobile robots [2,3], the basic                          duces a smooth control signal. If this is not the case, the implemen-
+limitations of mobile robot control still come from their kinematic                           tation on the dynamic model becomes impossible. Unfortunately,
+model, as shown in [4–6]. Kinematic control laws are also very im-                            due to a discontinuity in the orientation error of ±180°, quite often
+portant from the practical point of view, since the wheel-velocity                            there is also a discontinuity in the angular-velocity command. This
+control is often implemented locally on simple, micro-controller-                             comes from the fact that the classical kinematic model is continu-
+based hardware, while the velocity command comes from high-                                   ous with respect to orientation (there are no jumps at ±π ), while
+level hardware that also provides the current control objective.                              in implementation the orientation is often mapped to the (−π , π]
+   Traditionally, the problem of mobile robot control has been                                interval. In this paper a novel kinematic model is proposed that
+approached by point stabilisation [7] or by redefining the problem                            overcomes this difficulty, although it is of a higher order. A control
+as a tracking control one [8]. There are also some approaches                                 law that achieves global asymptotic convergence to a predesigned
+that tackle both problems simultaneously [9]. We believe that the                             path under some mild conditions is also proposed and compared
+tracking control approach is somewhat more appropriate, since                                 to existing control laws.
+the nonholonomic constraints and other control goals (obstacle                                    The problem statement is given in Section 2. The new kinematic
+                                                                                              model and the corresponding error model are developed in Sec-
+avoidance, minimum travel time, minimum fuel consumption) are
+                                                                                              tion 3. The Lyapunov control design is described in Section 4. In
+implicitly included in the path-planning procedure [10–12]. It is
+                                                                                              Section 5, several control algorithms are compared. The conclu-
+also easier to extend this approach to more complex schemes
+                                                                                              sions are stated in Section 6.
+such as the control of mobile robot platoons [13]. Many control
+algorithms were proposed in the path-tracking framework, such
+                                                                                              2. Problem statement
+
+                                                                                                 Assume a two-wheeled, differentially driven, mobile robot like
+ ∗ Tel.: +386 1 4768763; fax: +386 1 4264631.                                                 the one depicted in Fig. 1, where (x, y) is the wheel-axis-centre
+    E-mail address: saso.blazic@fe.uni-lj.si.                                                 position and θ is the robot orientation. The kinematic motion
+0921-8890/$ – see front matter © 2011 Elsevier B.V. All rights reserved.
+doi:10.1016/j.robot.2011.06.005
+1002                                                                    S. Blažič / Robotics and Autonomous Systems 59 (2011) 1001–1007
+
+                                                                                                            ėx            cos eθ   0 [ ]    −1           ey
+                                                                                                                                                       
+                                                                                                                                       vr
+                                                                                                            ėy    =       sin eθ   0     + 0             −ex u.              (5)
+                                                                                                                                       wr
+                                                                                                            ėθ              0      1        0            −1
+                                                                                                          The transformation (4) is theoretically imposed by the group
+                                                                                                          operation, noting that the model (2) is a system in the Lie group
+                                                                                                          SE(2) [5]. The approach itself was adopted in [8], where the authors
+                                                                                                          also proposed PID control for the stabilisation of the robot at the
+                                                                                                          reference posture. Later, many authors used the error model (5)
+                                                                                                          for the tracking control design.
+                                                                                                              Very often, e.g., [14], the following control u is used to solve the
+                                                                                                          tracking problem:
+
+                                                                                                               v     vr cos eθ + vb
+                                                                                                             [ ] [                  ]
+                                                                                                          u=       =                                             (6)
+                   Fig. 1. Two-wheeled, differentially driven, mobile robot.                                   w        wr + wb
+                                                                                                          where uTb = vb wb is the feedback signal to be determined
+                                                                                                                              
+equations of such a mobile robot are equivalent to those of a
+unicycle. Robots with such an architecture have a nonholonomic                                            later. Inserting the control (6) into (5), the resulting model is given
+constraint of the form:                                                                                   by:
+                                      ẋ(t )                                                             ėx = wr ey − vb + ey wb
+                                      [       ]
+ − sin θ (t )          cos θ (t )
+
+                                                =0                                               (1)
+                                        ẏ(t )                                                            ėy = −wr ex + vr sin eθ − ex wb                                    (7)
+resulting from the assumption that the robot cannot move in                                               ėθ = −wb .
+the lateral direction. Only the first-order kinematic model of the
+system will be treated in this paper:
+                                                                                                          3.2. Fourth-order error model of the system
+                        cos θ
+          
+       ẋ                            0 [ ]
+                                      
+                                         v
+q̇ =  ẏ  =           sin θ        0                                                           (2)         The problem of using the third-order error model presented
+                                         w
+          θ̇              0          1                                                                    in the previous section is that the transformation between the
+                                                                                                          robot posture and the error model is not bijective. This can be
+where qT (t ) = x(t ) y(t ) θ(t ) is the vector of generalised
+                                                            
+                                                                                                                                                                               T
+                                                                                                          observed from the fact that any error state ex ey eθ + 2kπ
+                                                                                                                                                                
+coordinates, while v and w are the translational and the angular
+velocities, respectively, of the system in Fig. 1. The velocities of the                                  for fixed ex , ey , eθ , and for arbitrary k ∈ Z corresponds to
+right and the left wheels of the robot are vR = v + w2B and vL =                                          the same robot posture. To say this more clearly: If we take
+                                                                                                          any robot posture and rotate the robot for any multiple of
+v − w2B , respectively, where B is the robot inter-wheel distance. The
+                                                                                                          360°, the same robot posture is obtained (the sensors would not
+control design goal is to follow the virtual robot or the reference
+                                                                                                          observe any difference between the two postures). Consequently,
+trajectory, defined by
+                                                                                                          by just observing the robot posture it is impossible to deduce
+qTr (t ) = xr (t )         yr (t )       θr (t )
+                                                  
+                                                                                                 (3)      the orientation error. In practical control implementations the
+                                                                                                          orientation error is often mapped onto the interval (−π , π] to
+where qr (t ) is a priori known and smooth. It is very easy to show
+                                                                                                          somehow overcome the above mentioned bijectivity problem. The
+that the system (2) is flat [24], with the flat outputs being x and
+                                                                                                          side effect of this is that the (angular-velocity) control signal
+y. Consequently, (3) can be produced by the uniformly continuous
+                                                                                                          often expresses discontinuity when the orientation error of ±π is
+control inputs vr (t ) and wr (t ) in the absence of initial conditions,
+                                                                                                          crossed (this will be shown in the examples at the end of the paper).
+parasitic dynamics and external disturbances. The goal is to design
+                                                                                                          Discontinuous velocity control signals are even more problematic
+a feedback controller to achieve the tracking and the tracking
+                                                                                                          because of the implementation on the real dynamic system.
+should be asymptotic under the persistency of excitation (PE)
+                                                                                                              The bijectivity between the robot posture and the states of the
+through vr (t ) or wr (t ).
+                                                                                                          system should be therefore reflected in the kinematic model of
+                                                                                                          the system and also in the error model of the system. This can be
+3. Error model of the mobile robot kinematics
+                                                                                                          achieved by increasing the order of the system to 4. The variable
+   The posture error is not given in the global coordinate system,
+                                                                                                          θ (t ) from the original kinematic model (2) is exchanged by two
+                                                                                                          new variables s(t ) = sin(θ (t )) and c (t ) = cos(θ (t )). Their
+but rather as an error in the local coordinate system of the robot:
+                                                                                                          derivatives are:
+ex gives the error in the direction of driving, ey gives the error
+in the lateral direction, and eθ gives the error in the orientation.                                      ṡ(t ) = cos(θ (t ))θ̇ (t ) = c (t )w(t )
+The posture error e =
+                                            
+                                                ex      ey   eθ
+                                                                  T
+                                                                       is determined using the                                                                                (8)
+                                                       T                                                 ċ (t ) = − sin(θ (t ))θ̇ (t ) = −s(t )w(t ).
+                                                     θ and the reference posture qr =
+                                 
+actual posture q =                   x     y
+                  T                                                                                      The new kinematic model is then obtained:
+                θr :
+
+ xr      yr                                                                                                                       
+                                                                                                                ẋ     c            0 [ ]
+    ex       cos θ              sin θ           0                                                              ẏ  s             0 v
+                                                
+                                                                                                          q̇ =   =                     .                                   (9)
+    ey    = − sin θ             cos θ           0 (qr − q) .                                     (4)            ṡ    0             c  w
+    eθ                 0          0             1                                                               ċ    0             −s
+                                                                                                              The new error states are defined as
+3.1. Third-order error model of the system                                                                ex = c (xr − x) + s(yr − y)
+                                                                                                          ey = −s(xr − x) + c (yr − y)
+   From (2) and (4) and assuming that the virtual robot has a                                                                                                                (10)
+kinematic model similar to (2), the posture-error model can be                                            es = sin(θr − θ ) = sr c − cr s
+written as follows:                                                                                       ecos = cos(θr − θ ) = cr c + sr s.
+                                                                      S. Blažič / Robotics and Autonomous Systems 59 (2011) 1001–1007                                                                      1003
+
+
+After the differentiation of Eq. (10) and some manipulations, the                                       are good choices). By taking into account the control law (18), the
+following system is obtained.                                                                           function V̇ becomes:
+                                                                                                                                                              ]n−1
+ėx = vr ecos − v + ey w
+                                                                                                                                            [
+                                                                                                                                                      ec 2
+                                                                                                        V̇ = −      kkx e2x    −   ks e2s     1+                        .                                  (19)
+ėy = vr es − ex w                                                                                                                                    a
+                                                                                             (11)
+ės = wr ecos − ecos w                                                                                     Two very well-known lemmas will be used in the proof of a
+                                                                                                        theorem in this section. The first one is Barbălat’s lemma and the
+ėcos = −wr es + es w.
+                                                                                                        other one is a derivation of Barbălat’s lemma. Both lemmas are
+Like in (6), v = vr ecos + vb and w = wr + wb will be used in                                           taken from [25] and are given below for the sake of completeness.
+the control law. The control goal is to drive ex , ey , and es to 0. The                                                                                                         t
+variable ecos is obtained as the cosine of the error in the orientation                                 Lemma 1 (Barbălat’s Lemma). If limt →∞ 0 f (τ )dτ exists and is
+and should be driven to 1. This is why a new error will be defined                                      finite, and f (t ) is a uniformly continuous function, then limt →∞ f (t )
+as ec = ecos − 1 and the final error model of the system is now:                                        = 0.
+ėx = wr ey − vb + ey wb                                                                                Lemma 2. If f , f˙ ∈ L∞ and f ∈ Lp for some p ∈ [1, ∞), then
+ėy = −wr ex + vr es − ex wb                                                                            f (t ) → 0 as t → ∞.
+                                                                                             (12)               In Lemma 2 the Lp norm of a function f (t ) is used. It is defined
+ės = −ec wb − wb
+                                                                                                        as:
+ėc = es wb .                                                                                                        ∫ ∞                         1/p
+                                                                                                        ‖f ‖p =                    |f (τ )|p dτ                                                            (20)
+4. Lyapunov-based control design                                                                                           0
+                                                                                                        where |·| denotes the vector (scalar) length. If the above integral
+   A controller that achieves asymptotic stability of the error                                         exists (is finite), the function f (t ) is said to belong to Lp . Limiting p
+model (12) will be developed based on a Lyapunov approach. A                                            towards infinity provides a very important class of functions L∞ —
+very straightforward idea would be to use a Lyapunov function of                                        bounded functions.
+the type
+                                                                                                        Theorem 1. If the control law (18) is applied to the system (12) where
+      k 2        1 2                                                                                 k is a positive constant, a > 2 is a constant, kx and ks are
+         ex + e2y +    es + e2c
+                                
+V0 =                                                          (13)                                      positive bounded functions, and the reference velocities vr and wr are
+      2             2
+                                                                                                        bounded, then the tracking errors ex , es , and ec converge to 0. The
+however, a slightly more complex function will be proposed
+                                                                                                        convergence of ey to 0 is guaranteed, provided that at least one of
+here, which also includes the function (13) as a special case. The
+                                                                                                        the two conditions is met:
+following Lyapunov-function candidate is proposed to achieve the
+control goal:                                                                                           1. vr is uniformly continuous and does not go to 0 as t → ∞, while
+                                                                                                           ks is uniformly continuous,
+      k 2                            1                                                                 2. wr is uniformly continuous and does not go to 0 as t → ∞, while
+        ex + e2y +                              e2s + e2c
+                                                         
+V =                                                                                          (14)
+                             2 1 + eac                                                                     vr , kx , and ks are uniformly continuous.
+                                 
+      2
+where k > 0 and a > 2 are constants. Note that the range of the                                         Proof. It follows from (19) that V̇ ≤ 0, and therefore the Lyapunov
+function ec = cos(θr − θ ) − 1 is [−2, 0], and therefore                                                function is non-increasing. Consequently, the following can be
+                                                                                                        concluded:
+      a−2                   ec
+0<                 ≤1+           ≤1                                                                     ex , ey , es , ec ∈ L∞ .                                                                           (21)
+          a                 a
+                                                                                             (15)       Based on (21), it follows from (18) that the control signals are
+          1             a
+1≤            ec   ≤             .                                                                      bounded, and from (12) that the derivatives of the errors are
+      1+      a
+                       a−2
+                                                                                                        bounded:
+Due to (15) the function V in (14) is lower-bounded by the function
+V0 in (13). Since the latter is of class K , V fulfils the conditions for                              vb , wb , ėx , ėy , ės , ėc ∈ L∞                                                               (22)
+the Lyapunov function. The role of 1 + eac will be explained later
+                                                
+                                                                                                        where we also took into account that vr , wr , k, kx , ks , and
+on. The function V can be simplified by using the following:                                            
+                                                                                                          1 + eac
+                                                                                                                    2n
+                                                                                                                         are bounded. It follows from Eqs. (21) and (22) that
+e2s + e2c = e2s + (ecos − 1)2 = 2 − 2ecos = −2ec .                                           (16)       ex , ey , es , and ec are uniformly continuous (note that the easiest
+                                                                                                        way to check the uniform continuity of f (t ) on [0, ∞) is to see if
+Taking into account the equations of the error model (12) and (16),                                     f , f˙ ∈ L∞ ).
+the derivative of V in (14) is:                                                                               In order to show the asymptotic stability of the system, let us
+                                                1                             − 1a es wb (−2ec )        first calculate the following integral:
+V̇ = −kex vb + kvr ey es +                         ec
+                                                        (−2es wb ) +                      2           ∫ ∞
+                                          2 1+ a                               2 1 + eac
+                                                                                   
+                                                                                                                  V̇ dt = V (∞) − V (0)
+                                                                                                          0
+                                                 wb                                                                                                                                            ]n−1
+   = −kex vb + es kvr ey −                                       .
+                                                                                                                                   ∫ ∞                        ∫ ∞            [
+                                                                                             (17)                                                                                      ec 2
+                                                                                                                                            kkx e2x dt −            ks e2s
+                                                         2
+                                               1+   ec                                                                  =−                                                       1+                   dt   (23)
+                                                    a                                                                                0                         0                        a
+In order to make V̇ negative semi-definite, the following control                                       where the notation V (t ) is used although V does not depend on
+law is proposed:                                                                                        t explicitly. Since V is a positive definite function, the following
+vb = kx ex                                                                                              inequality holds:
+                                                                      ]n                                              ∫ ∞                        ∫ ∞               [                 ]n−1
+                                                                                             (18)                                                                            ec 2
+                                               [
+                       ec  2                            ec 2
+wb = kvr ey 1 +                      + ks es        1+                                                  V (0) ≥                kkx e2x dt    +            ks e2s    1+                       dt
+                         a                                a                                                            0                          0                          a
+where kx (t ) and ks (t ) are positive functions, while n ∈ Z. For
+                                                                                                                              ∫ ∞                     ∫ ∞
+practical reasons n is a small number (usually −2,−1, 0, 1 or 2                                                   ≥ kkx              e2x dt + ks L             e2s dt                                      (24)
+                                                                                                                               0                          0
+1004                                                                S. Blažič / Robotics and Autonomous Systems 59 (2011) 1001–1007
+
+
+where the lower bounds of the functions kx (t ), ks (t ), and                                            It is somehow more difficult to prove the convergence of ec to 0.
+                   2(n−1)
+                                                                                                      However, it has already been shown that ec converges either to 0 or
+
+         ec (t )
+    1+                         are introduced
+           a                                                                                          to −2, and it is easy to show that ec will converge to 0 if the initial
+                                                                                                      condition of the error vector is in the vicinity of the origin or the
+0 < kx ≤ kx (t ) t ∈ R                                                                                design parameter a is sufficiently close to 2. The error ec converges
+0 < ks ≤ ks (t ) t ∈ R                                                                                to 0 asymptotically if one of the following conditions is satisfied:
+                                                                                           (25)
+              
+                            ec ( t )
+                                       2(n−1)                                                         • V (0) ≤ 2, or
+0<L≤                   1+                         t ∈R                                                 • V (0) > 2 and a < V2V (0)
+                                                                                                                                   .
+                               a                                                                                             (0)−2
+                                                                                                      To prove this statement, let us calculate the value of the Lyapunov
+and two cases can be distinguished to determine the value of L due                                                                                         T
+to (15):                                                                                              function V in e−2 = 0                0       0      −2 :
+                                                                                                                                 
+       1                                 n≤1                                                                                         1                              2a
+                         2(n−1)                                                                      V−2 = V |e=e−2 =                            e2c            =            > 2.   (30)
+                                                                                                                                 
+L=           a−2                                                                           (26)                       2 1 + eac
+                                                                                                                                 
+                                                                                                                                                                      a−2
+                                         n > 1.                                                                                  
+                                                                                                                                                         ec =−2
+                   a
+                                                                                                      It is easy to show that V (0) < V−2 if one of the above two
+     It follows from (24) that ex , es ∈ L2 . Applying Lemma 2, the
+                                                                                                      conditions is satisfied. Among all the points that share the same
+convergence of ex (t ) and es (t ) to 0 follows immediately. When
+                                                                                                      ec = −2, e−2 is the point with the lowest V . Since V is
+es is 0, ec can be either 0 or −2 since es and (ec + 1) are the
+                                                                                                      a monotonically non-increasing function, the system can never
+sine and the cosine, respectively, of the same argument. Due to
+                                                                                                      reach any point with ec = −2. Thus, it is only possible that ec
+es → 0, it follows from (12) that ėc → 0 and consequently the
+                                                                                                      converges to 0.
+limit limt →∞ ec (t ) exists and is either 0 or −2.
+                                                                                                          Now let us assume that ec is in the vicinity of −2. Upon inserting
+     Until now we only established the convergence of ex (t ) and
+                                                                                                      wb from Eq. (18), ėc in Eq. (12) becomes:
+es (t ) to 0, while ec (t ) was shown to converge either to 0 or to
+−2. To show the convergence of ey (t ) to 0, at least one of the                                                                              ec 2                 ec 2n
+conditions 1 or 2 of Theorem 1 have to be fulfilled. Let us first                                     ėc = es wb = kvr ey es 1 +                        + ks e2s 1 +        .        (31)
+                                                                                                                                               a                           a
+analyse the condition 1. Applying Lemma 1 to ės (t ) ensures that
+limt →∞ ės (t ) = 0 if limt →∞ es (t ) exists and is finite (which has                               The second term in Eq. (31) is always positive. The error ec will
+already been proven) and ės (t ) is uniformly continuous. The latter                                 increase and thus be repelled from ec = −2 if the product v         r ey es is
+is true (see (12)) if (ec +1)wb is uniformly continuous. It has already                               positive. If this is not satisfied, then ec will still increase if vr ey  is
+been shown that ec is uniformly continuous. The feedback control                                      small enough (the second term is dominant in Eq. (31)):
+for the angular velocity wb defined in (18) is uniformly continuous                                                              2(n−1)
+                                                                                                      vr ey  < ks |es | 1 + ec
+                                                                                                                         
+since ks and vr are uniformly continuous from the assumption in                                                                          ⇒ ėc > 0.
+                                                                                                            
+                                                                                                                                                                                      (32)
+condition 1 of the theorem. The statement limt →∞ ės (t ) = 0,                                                     k                  a
+which is identical to                                                                                 Even if this is not the case, the analysis in the vicinity of ec = −2
+                                                                                                    will show that this equilibrium point is repelling. The errors ex and
+                                                                                                      es always converge to 0 and we can say that after some time they
+ lim       − (ec (t ) + 1) wb (t ) = 0                                                     (27)
+                                                                                                      belong to O(ε) where ε is sufficiently small. It is easy to conclude
+t →∞
+                                                                                                      from (12) that the derivatives of the errors then become:
+has therefore been proven. Since (ec (t ) + 1) converges to 1 or to
+−1, the following can be concluded from (18):                                                         ėy = O(ε)
+                                                                                 2 ]n 
+                                                                                                                                              ec 2                                  (33)
+                                                                                                      ės = (−ec − 1)kvr ey 1 +                          + O(ε).
+                                                                   [
+                                                 ec 2                     ec
+ lim wb = lim                      kvr ey 1 +             + ks es     1+                                                                       a
+t →∞                   t →∞                       a                         a
+                                                                                                      Now we are interested in the derivative of vr ey es :
+         = 0.                                            (28)
+                                                                                                       d
+               ec                                   2                                                      (vr ey es ) = v̇r ey es + vr ėy es + vr ey ės
+                                                   
+The factor 1 + a can converge either to 1 or to 1 − a , but is
+                                                                                                      dt
+always strictly positive and bounded. Since the same holds for ks ,
+while it was shown that es converges to 0, the whole second term
+                                                                                                                                                   ec 2
+                                                                                                           = O(ε) + O(ε 2 ) + (−ec − 1)kvr2 e2y 1 +       + O(ε).                     (34)
+of wb in Eq. (28) also converges to 0. In the first term k is a finite                                                                                                 a
+                            ec 2
+constant, 1 + a is bounded and strictly positive, while vr is also
+                             
+                                                                                                      We can see that in the vicinity of ec = −2 the dominant term in
+bounded and does not diminish as t → ∞ due to the assumption                                          Eq. (34) is always positive and ėc in (31) also eventually becomes
+in the condition 1. Consequently, the convergence of ey to 0 follows.                                 positive. Even if for a short time the error ec is approaching −2, it
+    For the second case (condition 2) Barbălat’s lemma (Lemma 1)                                      is always repelled after that. Note that this happens when es and
+is applied to ėx in Eq. (12) after inserting the control law for vb (18):                            vr ey are of the opposite sign (if they are of the same sign ec always
+                                                                                                      increases). From (12) it can be concluded that es will then move in
+ėx = wr ey − kx ex + ey wb .                                                              (29)
+                                                                                                      the direction of changing its sign. But it has to cross es = 0 when ec
+In order to show that limt →∞ ėx = 0 we again have to guarantee                                      becomes −2. This is why the error ec actually crosses ec = −2 but
+that all the signals on the right-hand side of Eq. (29) are uniformly                                 it is immediately repelled from it. The solution ec = −2 is therefore
+continuous. We have seen that ex and ey are uniformly continuous,                                     an unstable equilibrium point.
+wr and kx are uniformly continuous from the assumption of the                                              Since ec cannot be attracted to −2 for a longer time, it has to
+condition 2, while wb is uniformly continuous if ks and vr are                                        eventually be driven to 0 because this is the only alternative. 
+uniformly continuous. The latter two conditions also guarantee
+that limt →∞ wb = 0 as shown before. Since ex and wb converge                                         5. Comparison of different control laws
+to 0 while kx and ey are bounded, the last two terms in Eq. (29) go
+to 0 as t goes to infinity. Consequently, the product wr ey also goes                                    The proposed method has been extensively tested and com-
+to 0. Since wr does not go to 0, ey has to go to 0.                                                   pared to the existing methods from the literature. The first one
+                                              S. Blažič / Robotics and Autonomous Systems 59 (2011) 1001–1007                                                      1005
+
+
+is from [14] and the other one is inspired by Samson’s work [15].               Table 1
+These algorithms were chosen because they were both designed                    Cost functions of individual control laws.
+                                                                                                           i                       i             i
+using Lyapunov stability theory. The Lyapunov functions used                      i                    Ce                         Cv            Cw                 Nπi
+therein have the same limit around the zero error in orientation                   1                   1.4894                     1.0186        1.8870              98
+(eθ = 0). The control law proposed in [14] is:                                     2                   1.3693                     1.0046        1.7706              98
+                                                                                   3                   1.0742                     1.0628        1.7594             483
+vb = kx ex                                                                         4                   1.4426                     1.0133        1.8355              98
+                                                                     (35)
+wb = kvr ey + ks sin eθ .                                                          5                   1.3336                     1.0066        1.6903             154
+                                                                                   6                   1.0599                     1.0667        1.7651             500
+Actually, there was also a third factor vr in the second term of                   7                   1.4126                     1.0184        1.5696              98
+wb which is not normally used in the recent papers that cite this                  8                   1.2591                     1.0217        1.5912             265
+approach since additional assumptions about vr are needed. On                      9                   1.0471                     1.0696        1.7655             508
+                                                                                  10                   4.5709                     1.2081        1                   98
+the other hand, vr can also be included in ks if the requirements
+                                                                                  11                   1.0881                     1.0773        1.5766             499
+are met. Note that the control law (35) can be easily developed if                12                   1.0345                     1.0725        1.7658             516
+the most straightforward Lyapunov function V0 from (13) is used                   13                   7.3737                     1.5574        1.1021              98
+in the controller design procedure. Note also that the control law                14                   1                          1.1319        1.5885             758
+(35) is a special case of (18) when a limits to infinity.                         15                   1.0226                     1.0754        1.7669             524
+                                                                                  16                   1.3591                     1             1.7534               0
+    The control law due to Samson is:
+                                                                                  17                   1.0328                     1.0724        1.7763             517
+vb = kx ex
+              sin eθ                                                 (36)       trajectory is the same in all the simulation runs:
+wb = kvr ey            + ks eθ .
+               eθ
+                                                                                xr (t ) = cos(ω0 t )
+In our simulation experiments the orientation error eθ in (36) was                                                                                                 (37)
+                                                                                yr (t ) = sin(2ω0 t )
+always mapped to the interval (−π , π] to make the comparison
+fair. It is easy to see that all three control laws given in Eqs. (18),         with ω0 = 0.34. The simulation run always started at t = 0
+(35) and (36) that will be compared in the paper have the same                  and finished at t = 2ωπ . The control signals vb and wb were
+                                                                                                           0
+limit around eθ = 0 and it is therefore fair to use the same control            saturated to ±10. The simulation experiment was conducted with
+gains—in our case we shall use k = 10, kx = 10, and ks = 10.                    different initial conditions. The possible initial conditions of the
+    The form of the control laws suggests that the role of vb                   mobile robot were
+is always the reduction of ex , while wb needs to cater for the
+                                                                                ex (0), ey (0) ∈ Ixy = {−2, −1.5, −1, −0.7, −0.5,
+remaining two errors. A very simplified explanation is that the first
+term in wb takes care of the lateral error, while the second term is                                                  −0.3, −0.1, 0.1, 0.3, 0.5, 0.7, 1, 1.5, 2}
+                                                                                                                                                                 (38)
+responsible for the orientation error. In reality, the problems are                                            lπ 
+                                                                                                                                          
+much more complicated, due to the nonholonomic nature of the                    eθ (0) ∈ Iθ =                      l = −11, −10, . . . , 12 .
+                                                                                                               12 
+system. Nevertheless, we can still be sure of certain facts:
+                                                                                For each simulation run the following cost function was calculated:
+• The feedback vb is the same in all three control laws that have
+  been compared, and therefore we cannot expect any drastic                                  ∫ 2π [                                        ]
+                                                                                                  ω0       k 2        k          1
+                                                                                i xyθ
+  differences in performance.                                                    ce     =                    ex (t ) + e2y (t ) + e2θ (t ) dt                      (39)
+• The control laws (18) and (35) are continuous with respect to                               0            2          2          2
+  the orientation error (at the orientation error of ±π ) while                 where x, y, and θ denote the respective initial conditions, while i
+  the control law (36) does not share this property. This is a                  denotes the index of the control law. Seventeen different control
+  problem of the latter approach since the implementation of                    laws were tested: Eq. (35) corresponds to i = 17, Eq. (36)
+  the discontinuous control law on a dynamic model becomes                      corresponds to i = 16, and Eq. (18) corresponds to i =
+  questionable.                                                                 1, . . . , 15, where 15 variations with n ∈ {−2, −1, 0, 1, 2} and
+• Let us denote the ‘‘gain’’ from ey to wb by gy (t ) , |wb (t )|/              a ∈ {2.1, 7100} were used: n = −2, a = 2.1 correspond to i =
+  |ey (t )||eθ (t )=0 . Additionally, the superscripts p, k, and s denote       1, n = −2, a = 7 correspond to i = 2, and so on. For each variation
+  the proposed control law (18), Kanayama’s control law (35),                   of the initial conditions in (38), seventeen simulation experiments
+  and Samson’s control law (36), respectively. Among the three                  were conducted with seventeen different control laws, meaning
+  control laws compared, gyk is always the highest. It is easy to               that the total number of simulation runs was 14 × 14 × 24 × 17.
+                                   p
+   show that if a ≥ 6, gy is always larger than gys . If 2 < a <                    Note that the integral of the Lyapunov function used for the
+              p                               p                                 development of (36) was used (for small errors in the orientation
+  6, gys >   gy when eθ is small, and gys   < gy when eθ is large.
+                                                                                all three Lyapunov functions have the same limit) for the cost
+• Let us denote the ‘‘gain’’ from eθ to wb by gθ (t ) , |wb (t )|/
+  |eθ (t )||ey (t )=0 . The superscripts are the same as above. If n >          function of an individual simulation run (39). The overall cost
+       p                               p                                        function of a certain control law i was simply the sum of all the
+   0, gθ < gθk < gθs . If n = 0, gθ = gθk < gθs . If n is negative, then        individual cost functions:
+   gθk is the lowest. The comparison between Samson’s control
+                                                                                                                  i xyθ
+                                                                                        − − −
+                                                                                Cei =                                         .
+                                                                                                                          
+   law and the proposed one depends on the choice of design                                                        ce                                              (40)
+                               p
+   parameters. If a ≤ 6|n|, gθ < gθs . If a > 6|n|, the comparison                      x∈Ixy y∈Ixy θ∈Iθ
+                                             p
+   also depends on the orientation error: gθ > gθs for small eθ and
+     p                                                                             Whenever the performance of a control law is discussed, it is
+   gθ < gθ for large eθ .
+           s
+                                                                                necessary to check for the control effort. Analogously with Eqs.
+If we try to summarise the above analysis we can see that for n > 0,            (39) and (40), Cvi and Cwi are defined as the sums of the integrals
+the proposed control law always has the lowest gain gθ , while                                                                                                 i         i
+                                                                                of vb2 and wb2 , respectively. Table 1 shows the cost functions C e , C v ,
+either Samson’s law or the proposed one have the lowest gy gain.                         i
+This means that we can expect lower control effort from these two               and C w (these are obtained by normalising the respective cost
+laws, while Kanayama’s law will exert more control action.                      functions with the best one in the column) for all 17 control laws.
+                                                                                                                                       i
+    An extensive simulation study was performed to compare                      The smallest total error Cei (or C e ) is achieved by the proposed
+all the approaches under the same circumstances. The reference                  control law with n = 2 and a = 7 (i = 14), followed closely
+1006                                                    S. Blažič / Robotics and Autonomous Systems 59 (2011) 1001–1007
+
+Table 2
+The columns show the ranking (according to l Cei ) of the control laws for all the simulation runs with eθ (0) = lπ/12 (the first row shows the index i of the best control law).
+
+  l=
+  −12             −11             −10              −9             −8             −7               −6                −5                 −4      −3           −2             −1
+   1               1               6               17             15             14               14                14                 14      14           14             14
+   4               4              17                9             17             15               11                15                 15      15           13             13
+   2              17               9               12             12             11               15                10                 17      17           15             15
+  16               2               3                6              9             12               12                11                 12      12           17             17
+   3               6              12               15              6             17               17                12                 11       9           12             12
+   5               3              15                3             11              9                9                17                  9      11            9              9
+  17               9               1               11              3              6                6                 9                 10       6           11             11
+   6               5               4                1             14              3                3                 6                  6       3            6              6
+   9              12               8                4              1              7               10                 3                  3      13            3              3
+  12              15               7                8              4              8                8                 8                  8      10           10             10
+  15              16               2                7              7             16                7                 7                  5       8            8              8
+   8               7              16                2              2              5                5                 5                 13       5            5              5
+  11               8               5               16             16              2               16                16                 16      16           16             16
+  14              11              11                5              5              4                2                 2                  7       2            2              2
+   7              14              14               14              8              1                4                 4                  2       7            7              7
+  10              10              10               10             10             10                1                 1                  4       4            4              4
+  13              13              13               13             13             13               13                13                  1       1            1              1
+  l=
+  0               1               2                3              4              5                6                 7                  8       9            10             11
+  14              14              14               14             14             14               14                14                 15      17            6              1
+  13              13              15               15             15             10               11                11                 17       9            3              4
+  15              15              17               17             12             15               15                15                 12      12           17              2
+  17              17              12               12             17             11               12                12                  9       6            9             16
+  12              12               9                9             10             12               17                17                  6      15           12              5
+   9               9               6               11             11             17                9                 9                  3       3            1             17
+  11              11              11                6              9              9                6                 6                 11      11           15              3
+   6               6               3                3              6              6               10                 3                  1       1            4              6
+   3               3              10               10              3              3                3                 7                  7       4            7              9
+  10              10              13                8              8              8                8                 8                  4       7            2             12
+   8               8               8                5              5              7                7                 5                  2       8            8             15
+   5               5               5               13              7              5                5                16                 16       2            5              7
+  16              16              16               16             16             16               16                 2                  5      16           16              8
+   2               2               2                2              2              2                2                 4                  8       5           11             11
+   7               7               7                7              4              4                4                 1                 14      14           14             14
+   4               4               4                4             13              1                1                10                 10      10           10             10
+   1               1               1                1              1             13               13                13                 13      13           13             13
+
+
+by the combination n = 2 and a = 100 (i = 15), Nakayama’s law                              different initial conditions (especially in orientation). To illustrate
+(i = 17), and the combination n = 1 and a = 100 (i = 12). We                               this, the cost function Cei was computed for each initial condition
+can also see that the control laws with a = 2.1, n = 1 (i = 10)                            in orientation separately:
+and especially with a = 2.1, n = 2 (i = 13) showed really bad                                                  −                i xyθ 
+results. The problem lies in the fact that in these cases the control                      l
+                                                                                               Cei =                             ce        .                               (41)
+wb is practically switched off when the orientation error is large.                                    x∈Ixy ,y∈Ixy ,θ=lπ /12
+The convergence is therefore very slow. This is why the control
+         i                                                                                 To reduce the level of information, only the rankings with respect
+effort C w is so low in these two cases. Due to the slow convergence
+                                                                                           to l are shown in Table 2. One can notice immediately that for
+in these two cases, these approaches are also the worst when only
+ i                                                                        i                low orientation errors the high values of n are good, while for
+C v is observed. In other cases, no big differences among C v can be                       large initial orientation errors the negative values of n are better.
+found, as expected. Perhaps we should note that the control law                            The explanation is very simple. When n < 0 the second term
+with the best total error (i = 14) is slightly worse in this respect                       in wb is the dominant one. This means that the main control
+                                              i
+than the others. When comparing C w and leaving out i = 10 and                             goal is to reduce the error in the orientation, while the lateral
+i = 13, which show very bad performance, the lowest overall                                error is not so important. Such a strategy is useful when the
+control effort is connected with the proposed control laws with                            error in the orientation is high and it is necessary to reduce it
+n = 0. If we were to choose the best control law, then we would                            quite quickly (otherwise the error in ey can also increase due to
+probably select the one with i = 15, which shows very good overall                         the interconnection). When, on the other hand, the orientation
+performance. Kanayama’s control law is very close while Samson’s                           error is low, it is more important to cope with ey , which is
+results are not so good (the only exception is the control effort for                      a problematic error due to the nonholonomic constraints. We
+the linear velocity, but even here the differences are small). The                         achieve the emphasis on the regulation of ey when n > 0.
+last column in Table 1 shows the total number of crossings of the
+±180° orientation error. It is interesting to note that good overall
+performance is highly correlated with a large number of these                              6. Conclusion
+crossings. It is obviously often advantageous to try to minimise
+the orientation error even though, for a short period of time, the                            In this paper a novel kinematic model is proposed where the
+orientation error is rising. Samson’s control law never did this and                       transformation between the robot posture and the system state
+yet its performance is bad.                                                                is bijective. A novel control law is also proposed. It is designed
+   Table 1 shows the average cost functions, but it is obvious                             within the Lyapunov stability framework. It is proven that the
+that all the control laws behave quite differently when exposed to                         global asymptotic stability of the system is achieved under some
+                                                          S. Blažič / Robotics and Autonomous Systems 59 (2011) 1001–1007                                                       1007
+
+
+very mild conditions if the reference velocities satisfy the condition                        [13] G. Klančar, D. Matko, S. Blažič, A control strategy for platoons of differential
+of persistent excitation.                                                                          drive wheeled mobile robot, Robotics and Autonomous Systems 59 (2) (2011)
+                                                                                                   57–64.
+   An extensive simulation study was performed and the results                                [14] Y. Kanayama, Y. Kimura, F. Miyazaki, T. Noguchi, A stable tracking control
+of the proposed control law are compared to some control laws                                      method for an autonomous mobile robot, in: Proceedings 1990 IEEE
+from the literature. The results of the simulation study also suggest                              International Conference on Robotics and Automation, Los Alamitos, CA, USA,
+                                                                                                   vol. 1, 1990, pp. 384–389.
+that the parameters n and a of the proposed control law could                                 [15] C. Samson, Time-varying feedback stabilization of car like wheeled mobile
+be scheduled according to the orientation error. The possibility of                                robot, International Journal of Robotics Research 12 (1) (1993) 55–64.
+adapting these parameters also exists since n could also be a real                            [16] G. Klančar, I. Škrjanc, Tracking-error model-based predictive control for
+                                                                                                   mobile robots in real time, Robotics and Autonomous Systems 55 (6) (2007)
+number, but this could lead to stability problems. These aspects                                   460–469.
+are, therefore, a topic of future research.                                                   [17] E.-H. Guechi, J. Lauber, M. Dambrine, G. Klančar, S. Blažič control design
+                                                                                                   for non-holonomic wheeled mobile robots with delayed outputs, Journal of
+                                                                                                   Intelligent & Robotic Systems 60 (3) (2010) 395–414.
+References                                                                                    [18] T.H.S. Li, S.J. Chang, Autonomous fuzzy parking control of a car-like mobile
+                                                                                                   robot, IEEE Transactions on Systems, Man, and Cybernetics—Part A: Systems
+ [1] I. Kolmanovsky, N.H. McClamroch, Developments in nonholonomic control                         and Humans 33 (4) (2003) 451–465.
+     problems, IEEE Control Systems Magazine 15 (6) (1995) 20–36.                             [19] Z.-G. Hou, A.-M. Zou, L. Cheng, M. Tan, Adaptive control of an electrically
+ [2] Z.-P. Jiang, H. Nijmeijer, Tracking control of mobile robots: a case study in                 driven nonholonomic mobile robot via backstepping and fuzzy approach, IEEE
+     backstepping, Automatica 33 (7) (1997) 1393–1399.                                             Transactions on Control Systems Technology 17 (4) (2009) 803–815.
+ [3] F. Pourboghrat, M.P. Karlsson, Adaptive control of dynamic mobile robots with            [20] R.-J. Wai, C.-M. Liu, Design of dynamic petri recurrent fuzzy neural network
+     nonholonomic constraints, Computers & Electrical Engineering 28 (4) (2002)                    and its application to path-tracking control of nonholonomic mobile robot,
+     241–253.                                                                                      IEEE Transactions on Industrial Electronics 56 (7) (2009) 2667–2683.
+ [4] R.W. Brockett, Asymptotic stability and feedback stabilization, in: Differential         [21] E. Maalouf, M. Saad, H. Saliah, A higher level path tracking controller for a four-
+     Geometric Control Theory, Birkhäuser, Boston, MA, 1983, pp. 181–191.                          wheel differentially steered mobile robot, Robotics and Autonomous Systems
+ [5] P. Morin, C. Samson, Control of nonholonomic mobile robots based on the                       54 (1) (2006) 23–33.
+     transverse function approach, IEEE Transactions on Robotics 25 (5) (2009)                [22] S.G. Tzafestas, K.M. Deliparaschos, G.P. Moustris, Fuzzy logic path tracking
+     1058–1073.                                                                                    control for autonomous non-holonomicmobile robots: design of system on a
+ [6] D. Lizarraga, Obstructions to the existence of universal stabilizers for smooth               chip, Robotics and Autonomous Systems 58 (8) (2010) 1017–1027.
+     control systems, Mathematics of Control, Signals, and Systems, MCSS 16                   [23] R.-E. Precup, H. Hellendoorn, A survey on industrial applications of fuzzy
+     (2004) 255–277.                                                                               control, Computers in Industry 62 (3) (2011) 213–226.
+ [7] F. Pourboghrat, Exponential stabilization of nonholonomic mobile robots,                 [24] M. Fliess, J. Levine, P. Martin, P. Rouchon, Flatness and defect of nonlinear-
+     Computers & Electrical Engineering 28 (5) (2002) 349–359.                                     systems—introductory theory and examples, International Journal of Control
+ [8] Y. Kanayama, A. Nilipour, C. Lelm, A locomotion control method for                            61 (6) (1995) 1327–1361.
+     autonomous vehicles, in: Proceedings of the 1988 IEEE International                      [25] P.A. Ioannou, J. Sun, Robust Adaptive Control, Prentice-Hall, 1996.
+     Conference on Robotics and Automation, Washington, DC, USA, vol. 2, 1988,
+     pp. 1315–1317.
+ [9] D. Buccieri, D. Perritaz, P. Mullhaupt, Z.-P. Jiang, D. Bonvin, Velocity-scheduling                                Sašo Blažič received the B.Sc., M. Sc., and Ph. D. degrees
+     control for a unicycle mobile robot: theory and experiments, IEEE Transactions                                     in 1996, 1999, and 2002, respectively, from the Faculty
+     on Robotics 25 (2) (2009) 451–458.                                                                                 of Electrical Engineering, University of Ljubljana. His
+[10] S.M. LaValle, Planning Algorithms, Cambridge University Press, Cambridge, UK,                                      research interests include adaptive, fuzzy and predictive
+     2006.                                                                                                              control of dynamical systems and modelling of nonlinear
+[11] M. Lepetić, G. Klančar, I. Škrjanc, D. Matko, B. Potočnik, Time optimal path                                       systems. He is also working in the area of mobile robotics
+     planning considering acceleration limits, Robotics and Autonomous Systems                                          with a stress on path planning and path following issues.
+     45 (3–4) (2003) 199–210.
+[12] C. Pozna, F. Troester, R.-E. Precup, J.K. Tar, S. Preitl, On the design of an obstacle
+     avoiding trajectory: method and simulation, Mathematics and Computers in
+     Simulation 79 (7) (2009) 2211–2226.
+

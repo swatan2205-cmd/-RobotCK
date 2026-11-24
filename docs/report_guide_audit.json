@@ -1,0 +1,19 @@
+{
+  "source_sha256": "415e4820e62df31db9ed45c2eda9e114cc49e2935618742d8f69cdb25de61874",
+  "pages": 22,
+  "tables_preserved": 9,
+  "figures_preserved": 4,
+  "chapters": [
+    "Chương 1. GIỚI THIỆU",
+    "Chương 2. CƠ SỞ LÝ THUYẾT",
+    "Chương 3. NỘI DUNG NGHIÊN CỨU VÀ THỰC HIỆN",
+    "Chương 4. KẾT QUẢ VÀ THẢO LUẬN",
+    "Chương 5. KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN"
+  ],
+  "font": "Times New Roman",
+  "body_size": 13,
+  "line_spacing": 1.3,
+  "paper": "A4",
+  "visual_qa": "Reviewed full report layout and revised front matter after pagination correction",
+  "docx_sha256": "8f5f9bdd07b20a0152e57da4d70c29b0f59ee61f96c7bb808392549226042e61"
+}

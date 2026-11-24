@@ -1,0 +1,76 @@
+RUN eight_i1_w8_tstrhc
+RUN eight_i1_w8_lyapunov
+RUN eight_i1_w10_tstrhc
+RUN eight_i1_w10_lyapunov
+RUN eight_i1_w12_tstrhc
+RUN eight_i1_w12_lyapunov
+RUN eight_i2_w8_tstrhc
+RUN eight_i2_w8_lyapunov
+RUN eight_i2_w10_tstrhc
+RUN eight_i2_w10_lyapunov
+RUN eight_i2_w12_tstrhc
+RUN eight_i2_w12_lyapunov
+RUN eight_i3_w8_tstrhc
+RUN eight_i3_w8_lyapunov
+RUN eight_i3_w10_tstrhc
+RUN eight_i3_w10_lyapunov
+RUN eight_i3_w12_tstrhc
+RUN eight_i3_w12_lyapunov
+RUN circle_i1_w8_tstrhc
+RUN circle_i1_w8_lyapunov
+RUN circle_i1_w10_tstrhc
+RUN circle_i1_w10_lyapunov
+RUN circle_i1_w12_tstrhc
+RUN circle_i1_w12_lyapunov
+RUN circle_i2_w8_tstrhc
+RUN circle_i2_w8_lyapunov
+RUN circle_i2_w10_tstrhc
+RUN circle_i2_w10_lyapunov
+RUN circle_i2_w12_tstrhc
+RUN circle_i2_w12_lyapunov
+RUN circle_i3_w8_tstrhc
+RUN circle_i3_w8_lyapunov
+RUN circle_i3_w10_tstrhc
+RUN circle_i3_w10_lyapunov
+RUN circle_i3_w12_tstrhc
+RUN circle_i3_w12_lyapunov
+              run_id                 status          rmse         iae                conditions          
+    __________________________    _____________    _________    ________    _____________________________
+
+    {'eight_i1_w8_tstrhc'    }    {'failed'   }          NaN         NaN    {'outside_design_conditions'}
+    {'eight_i1_w8_lyapunov'  }    {'completed'}     0.042297      1.5578    {'outside_design_conditions'}
+    {'eight_i1_w10_tstrhc'   }    {'completed'}    0.0037405    0.032486    {'within_design_conditions' }
+    {'eight_i1_w10_lyapunov' }    {'completed'}     0.015773     0.47503    {'within_design_conditions' }
+    {'eight_i1_w12_tstrhc'   }    {'completed'}    0.0037405    0.032486    {'within_design_conditions' }
+    {'eight_i1_w12_lyapunov' }    {'completed'}     0.015773     0.47503    {'within_design_conditions' }
+    {'eight_i2_w8_tstrhc'    }    {'failed'   }          NaN         NaN    {'outside_design_conditions'}
+    {'eight_i2_w8_lyapunov'  }    {'completed'}     0.070377       2.168    {'outside_design_conditions'}
+    {'eight_i2_w10_tstrhc'   }    {'completed'}     0.033573     0.27168    {'within_design_conditions' }
+    {'eight_i2_w10_lyapunov' }    {'completed'}     0.064863      1.5651    {'within_design_conditions' }
+    {'eight_i2_w12_tstrhc'   }    {'completed'}     0.033289     0.26718    {'within_design_conditions' }
+    {'eight_i2_w12_lyapunov' }    {'completed'}     0.064863      1.5651    {'within_design_conditions' }
+    {'eight_i3_w8_tstrhc'    }    {'failed'   }          NaN         NaN    {'outside_design_conditions'}
+    {'eight_i3_w8_lyapunov'  }    {'completed'}       1.2885      49.197    {'outside_design_conditions'}
+    {'eight_i3_w10_tstrhc'   }    {'completed'}     0.096791     0.99668    {'within_design_conditions' }
+    {'eight_i3_w10_lyapunov' }    {'completed'}      0.14076      2.9805    {'within_design_conditions' }
+    {'eight_i3_w12_tstrhc'   }    {'completed'}      0.10484      1.2095    {'within_design_conditions' }
+    {'eight_i3_w12_lyapunov' }    {'completed'}      0.14076      2.9805    {'within_design_conditions' }
+    {'circle_i1_w8_tstrhc'   }    {'completed'}    0.0059698    0.056642    {'within_design_conditions' }
+    {'circle_i1_w8_lyapunov' }    {'completed'}    0.0080143     0.13008    {'within_design_conditions' }
+    {'circle_i1_w10_tstrhc'  }    {'completed'}    0.0059578    0.056618    {'within_design_conditions' }
+    {'circle_i1_w10_lyapunov'}    {'completed'}    0.0080143     0.13008    {'within_design_conditions' }
+    {'circle_i1_w12_tstrhc'  }    {'completed'}    0.0059578    0.056618    {'within_design_conditions' }
+    {'circle_i1_w12_lyapunov'}    {'completed'}    0.0080143     0.13008    {'within_design_conditions' }
+    {'circle_i2_w8_tstrhc'   }    {'completed'}     0.041202     0.38971    {'within_design_conditions' }
+    {'circle_i2_w8_lyapunov' }    {'completed'}     0.069439      2.3024    {'within_design_conditions' }
+    {'circle_i2_w10_tstrhc'  }    {'completed'}     0.037178      0.3289    {'within_design_conditions' }
+    {'circle_i2_w10_lyapunov'}    {'completed'}     0.070021      2.3315    {'within_design_conditions' }
+    {'circle_i2_w12_tstrhc'  }    {'completed'}     0.034598     0.29528    {'within_design_conditions' }
+    {'circle_i2_w12_lyapunov'}    {'completed'}     0.070021      2.3315    {'within_design_conditions' }
+    {'circle_i3_w8_tstrhc'   }    {'completed'}      0.12646      1.7446    {'within_design_conditions' }
+    {'circle_i3_w8_lyapunov' }    {'completed'}      0.33962      13.305    {'within_design_conditions' }
+    {'circle_i3_w10_tstrhc'  }    {'completed'}       1.3297      55.781    {'within_design_conditions' }
+    {'circle_i3_w10_lyapunov'}    {'completed'}      0.33962      13.305    {'within_design_conditions' }
+    {'circle_i3_w12_tstrhc'  }    {'completed'}       1.3283      55.717    {'within_design_conditions' }
+    {'circle_i3_w12_lyapunov'}    {'completed'}      0.33962      13.305    {'within_design_conditions' }
+

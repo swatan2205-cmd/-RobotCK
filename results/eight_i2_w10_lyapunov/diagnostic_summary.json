@@ -1,0 +1,8 @@
+{
+  "maxFrontError": 0.22344861644852052,
+  "maxLinearizationResidual": 0.00099768060670182325,
+  "indexIncreases": 0,
+  "maxConstraintResidual": -0.058140643608598941,
+  "nonPositiveExitflags": 0,
+  "repeatAgreement": true
+}

@@ -1,0 +1,139 @@
+{
+  "formal_cases": 36,
+  "completed_cases": 33,
+  "condition_stops": 3,
+  "matlab_tests": {
+    "passed": 8,
+    "failed": 0,
+    "incomplete": 0,
+    "names": [
+      "test_robot_project/testWheelKnownCases",
+      "test_robot_project/testReferenceDerivative",
+      "test_robot_project/testReachSets",
+      "test_robot_project/testAngleWrapAndDomainFailure",
+      "test_robot_project/testExactIntegration",
+      "test_robot_project/testLyapunovDerivative",
+      "test_robot_project/testSolverAndSaturation",
+      "test_robot_project/testMetricsKnownConstant"
+    ]
+  },
+  "baseline": {
+    "status": "completed",
+    "maxStateDifference": 3.967443396035719e-08,
+    "maxWheelDifference": 1.284237473697658e-06,
+    "stateTolerance": 0.001,
+    "wheelTolerance": 0.1,
+    "rationale": "Match author solver options and ode45 output grid; 1 mm and 1 percent of 10 rad/s are predeclared numerical acceptance bounds.",
+    "pass": true
+  },
+  "core_source_integrity": true,
+  "input_preserved": true,
+  "csv_json_consistency": true,
+  "report_tables": 9,
+  "report_figures": 4,
+  "numbered_equations": 18,
+  "render_engine": "Microsoft Word native export; Poppler rasterization",
+  "packaged_render_docx_attempt": "Failed: LibreOffice is not bundled/available on this Windows runtime",
+  "visual_qa": "passed: all 19 pages inspected after final Word export; no clipping or overlapping content observed",
+  "report_pdf_sha256": "9c774325e089ab696c6e2425c4e981d92696ac1341ef578a420a46a24ab93aa7",
+  "reviewed_pages": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "page_count": 19,
+  "qa_image_manifest": [
+    {
+      "page": 1,
+      "sha256": "348a42f2646f06715d4fd0b92d822b2341326b8d82a40b366e8023bac62d6486"
+    },
+    {
+      "page": 2,
+      "sha256": "9cbf6075ca5124accf1a650c78bfcec7c3b792f6ffa67e5c400110039ecd879f"
+    },
+    {
+      "page": 3,
+      "sha256": "e9f3dbd91c2bb12bf7c373f4df5cf3cff8705e80bb2b58497b8be86dc7d85a2c"
+    },
+    {
+      "page": 4,
+      "sha256": "8d2d732afd6d5c7b46cd02a899dc8d851447a9ff78eb8682ebc4e67286f9509e"
+    },
+    {
+      "page": 5,
+      "sha256": "7ee4385b793cbfb950a8e142f08aa66ad81e5a12aad25d0db360f932bc8be6fb"
+    },
+    {
+      "page": 6,
+      "sha256": "2d59ca3397fbdb560caa7aaccd8d9a27a2331c106c545c6882187b10e236da2f"
+    },
+    {
+      "page": 7,
+      "sha256": "d6a887ad4c00d56195450442ec35a02d3c98f019e82aabb1ddf963dc4206b9a9"
+    },
+    {
+      "page": 8,
+      "sha256": "9ed42c012fb9f2c7013d150215cbeef221abcb4779e451d36a688e0392da2eca"
+    },
+    {
+      "page": 9,
+      "sha256": "d6c619666fdb1e862451722e99b14eba74671f25d9ed20ddbfdedfda339c4425"
+    },
+    {
+      "page": 10,
+      "sha256": "c1fb3481a7f01d3c0e70b3b68894dd369a26b567d3fb1f88d67e25dbf2c2c641"
+    },
+    {
+      "page": 11,
+      "sha256": "3156557dcc1ee156559c0456af971dc1419ae08f78aec0cd576aea1292f82dd0"
+    },
+    {
+      "page": 12,
+      "sha256": "668bafd018f972a2b34c56f95de868b6a2ca5adc9220b1d2ab8cefaeeca5fcc7"
+    },
+    {
+      "page": 13,
+      "sha256": "6abbbbc0ea5a86598df7e486beeec387e47fb32266ddef492bef2e5ae3e31279"
+    },
+    {
+      "page": 14,
+      "sha256": "5e73b8f792309837206e271a4405d911ae92fa48d1a668b751d6b191dc001980"
+    },
+    {
+      "page": 15,
+      "sha256": "ba55af124f70a64ae1640da18af98620fe2b95042819d9830bca33be0733ca44"
+    },
+    {
+      "page": 16,
+      "sha256": "1e5a9cd4becc7c98767337b62f20bc7d435a9ba941a808aafbb47ab51287663f"
+    },
+    {
+      "page": 17,
+      "sha256": "a039c25744d1b6d1553d2539a58718109f3bd4bda901b2397eb8131c71d0e643"
+    },
+    {
+      "page": 18,
+      "sha256": "071f626dcfb689a3397f2fcb7f888a3d64b1059965e2050bb69a2cc4f7ef55ac"
+    },
+    {
+      "page": 19,
+      "sha256": "5842b41ff6cd29a0b5ec0da3619a782e9f00c59b8444dc3c82c56bb8bc8be88a"
+    }
+  ]
+}

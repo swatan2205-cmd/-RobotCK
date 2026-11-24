@@ -1,0 +1,15 @@
+Error using ellipsoid
+Not enough input arguments.
+
+Error in ST_FL_Trajectory_Tracking_Differential_Drive_CDC23 (line 89)
+ell_d=ellipsoid(Qd);
+
+Error in run (line 91)
+evalin('caller', strcat(script, ';'));
+
+Error in run_original>execute_author_script (line 24)
+run(fullfile(fileparts(fileparts(mfilename('fullpath'))),'original','provided','ST_FL_Trajectory_Tracking_Differential_Drive_CDC23.m'));
+
+Error in run_original (line 9)
+    result=execute_author_script(); result.status='completed';
+failed

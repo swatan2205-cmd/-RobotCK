@@ -1,0 +1,22 @@
+# Local generated caches and packaging files
+tmp/
+release/
+__pycache__/
+*.pyc
+~$*
+*.asv
+*.autosave
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+# Local editor / agent configuration
+.vscode/
+.idea/
+.codex/
+.agents/
+# Redundant downloaded source copy (preserved source is under original/)
+T_ST_RHC_mobile_robots-main/

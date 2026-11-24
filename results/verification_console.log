@@ -1,0 +1,82 @@
+Running test_robot_project
+........
+Done test_robot_project
+__________
+
+  1x8 TestResult array with properties:
+
+    Name
+    Passed
+    Failed
+    Incomplete
+    Duration
+    Details
+
+Totals:
+   8 Passed, 0 Failed, 0 Incomplete.
+   4.5955 seconds testing time.
+
+                status: 'completed'
+    maxStateDifference: 3.9674e-08
+    maxWheelDifference: 1.2842e-06
+        stateTolerance: 1.0000e-03
+        wheelTolerance: 0.1000
+             rationale: 'Match author solver options and ode45 output grid; 1 mm and 1 percent of 10 rad/s are predeclared numerical acceptance bounds.'
+                  pass: 1
+
+                status: 'completed'
+    maxStateDifference: 0.0031
+    maxWheelDifference: 0.1044
+        stateTolerance: 1.0000e-03
+        wheelTolerance: 0.1000
+             rationale: 'Match author solver options and ode45 output grid; 1 mm and 1 percent of 10 rad/s are predeclared numerical acceptance bounds.'
+                  pass: 0
+
+    trajectory     controller      baseStatus       exactStatus     maxStateDifference    rmseDifference
+    __________    ____________    _____________    _____________    __________________    ______________
+
+    {'eight' }    {'tstrhc'  }    {'completed'}    {'completed'}        2.4087e-12          7.2026e-15  
+    {'eight' }    {'lyapunov'}    {'completed'}    {'completed'}        6.0535e-14          4.8572e-16  
+    {'circle'}    {'tstrhc'  }    {'completed'}    {'completed'}        3.2458e-09          1.0172e-10  
+    {'circle'}    {'lyapunov'}    {'completed'}    {'completed'}        1.6875e-14           4.996e-15  
+
+              run_id                 status        shapeOK    repeatAgreement    solverFlagsOK
+    __________________________    _____________    _______    _______________    _____________
+
+    {'circle_i1_w10_lyapunov'}    {'completed'}     true           true              true     
+    {'circle_i1_w10_tstrhc'  }    {'completed'}     true           true              true     
+    {'circle_i1_w12_lyapunov'}    {'completed'}     true           true              true     
+    {'circle_i1_w12_tstrhc'  }    {'completed'}     true           true              true     
+    {'circle_i1_w8_lyapunov' }    {'completed'}     true           true              true     
+    {'circle_i1_w8_tstrhc'   }    {'completed'}     true           true              true     
+    {'circle_i2_w10_lyapunov'}    {'completed'}     true           true              true     
+    {'circle_i2_w10_tstrhc'  }    {'completed'}     true           true              true     
+    {'circle_i2_w12_lyapunov'}    {'completed'}     true           true              true     
+    {'circle_i2_w12_tstrhc'  }    {'completed'}     true           true              true     
+    {'circle_i2_w8_lyapunov' }    {'completed'}     true           true              true     
+    {'circle_i2_w8_tstrhc'   }    {'completed'}     true           true              true     
+    {'circle_i3_w10_lyapunov'}    {'completed'}     true           true              true     
+    {'circle_i3_w10_tstrhc'  }    {'completed'}     true           true              true     
+    {'circle_i3_w12_lyapunov'}    {'completed'}     true           true              true     
+    {'circle_i3_w12_tstrhc'  }    {'completed'}     true           true              true     
+    {'circle_i3_w8_lyapunov' }    {'completed'}     true           true              true     
+    {'circle_i3_w8_tstrhc'   }    {'completed'}     true           true              true     
+    {'eight_i1_w10_lyapunov' }    {'completed'}     true           true              true     
+    {'eight_i1_w10_tstrhc'   }    {'completed'}     true           true              true     
+    {'eight_i1_w12_lyapunov' }    {'completed'}     true           true              true     
+    {'eight_i1_w12_tstrhc'   }    {'completed'}     true           true              true     
+    {'eight_i1_w8_lyapunov'  }    {'completed'}     true           true              true     
+    {'eight_i1_w8_tstrhc'    }    {'failed'   }     true           true              true     
+    {'eight_i2_w10_lyapunov' }    {'completed'}     true           true              true     
+    {'eight_i2_w10_tstrhc'   }    {'completed'}     true           true              true     
+    {'eight_i2_w12_lyapunov' }    {'completed'}     true           true              true     
+    {'eight_i2_w12_tstrhc'   }    {'completed'}     true           true              true     
+    {'eight_i2_w8_lyapunov'  }    {'completed'}     true           true              true     
+    {'eight_i2_w8_tstrhc'    }    {'failed'   }     true           true              true     
+    {'eight_i3_w10_lyapunov' }    {'completed'}     true           true              true     
+    {'eight_i3_w10_tstrhc'   }    {'completed'}     true           true              true     
+    {'eight_i3_w12_lyapunov' }    {'completed'}     true           true              true     
+    {'eight_i3_w12_tstrhc'   }    {'completed'}     true           true              true     
+    {'eight_i3_w8_lyapunov'  }    {'completed'}     true           true              true     
+    {'eight_i3_w8_tstrhc'    }    {'failed'   }     true           true              true     
+

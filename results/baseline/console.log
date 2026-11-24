@@ -1,0 +1,32 @@
+Warning: hysdel compiler could not be found.
+ans =
+
+  133.6052
+
+
+ans =
+
+    2.8821
+
+
+eps =
+
+    0.0054
+
+[Warning: Error updating Legend.
+
+ String scalar or character vector must have valid interpreter syntax:
+\omega_{r,max}
+] 
+[> In defaulterrorcallback (line 12)
+In savefig (line 36)
+In run_original (line 20)] 
+[Warning: Error updating Legend.
+
+ String scalar or character vector must have valid interpreter syntax:
+\omega_{l,max}
+] 
+[> In defaulterrorcallback (line 12)
+In savefig (line 36)
+In run_original (line 20)] 
+completed

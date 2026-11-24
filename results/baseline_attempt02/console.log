@@ -1,0 +1,20 @@
+Error using elltool.plot.plotgeombodyarr
+Error:File: D:\RobotCK\external\et\ellipsoids-715ed570b52fc4c04bb86994b0cbeaa7b5fa0b37\products\+elltool\+plot\plotgeombodyarr.m Line: 150 Column: 43
+Identifier 'SData' is not a function or a shared variable. To share 'SData' with a nested function, initialize it in the current scope. For more information, see Sharing Variables
+Between Parent and Nested Functions.
+
+Error in ellipsoid/plot (line 80)
+    [plObj,~,isHold]= plotgeombodyarr(...
+
+Error in ST_FL_Trajectory_Tracking_Differential_Drive_CDC23 (line 90)
+plot(ell_d)
+
+Error in run (line 91)
+evalin('caller', strcat(script, ';'));
+
+Error in run_original>execute_author_script (line 24)
+run(fullfile(fileparts(fileparts(mfilename('fullpath'))),'original','provided','ST_FL_Trajectory_Tracking_Differential_Drive_CDC23.m'));
+
+Error in run_original (line 9)
+    result=execute_author_script(); result.status='completed';
+failed

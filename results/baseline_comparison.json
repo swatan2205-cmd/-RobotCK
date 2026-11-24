@@ -1,0 +1,9 @@
+{
+  "status": "completed",
+  "maxStateDifference": 3.9674433960357192E-8,
+  "maxWheelDifference": 1.2842374736976581E-6,
+  "stateTolerance": 0.001,
+  "wheelTolerance": 0.1,
+  "rationale": "Match author solver options and ode45 output grid; 1 mm and 1 percent of 10 rad/s are predeclared numerical acceptance bounds.",
+  "pass": true
+}

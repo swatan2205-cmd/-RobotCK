@@ -1,0 +1,5 @@
+trajectory,controller,baseStatus,exactStatus,maxStateDifference,rmseDifference
+eight,tstrhc,completed,completed,2.40873987422674e-12,7.2025718722557e-15
+eight,lyapunov,completed,completed,6.05349104176867e-14,4.85722573273506e-16
+circle,tstrhc,completed,completed,3.24580406996233e-09,1.01717544109814e-10
+circle,lyapunov,completed,completed,1.68753899743024e-14,4.9960036108132e-15

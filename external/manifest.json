@@ -1,0 +1,14 @@
+﻿{
+    "upstream":  {
+                     "repo":  "cristiri/T_ST_RHC_mobile_robots",
+                     "commit":  "c57e98262ff21d8bab711b892a14c7afc98e0c08"
+                 },
+    "mpt3":  {
+                 "repo":  "kvasnica/mpt3",
+                 "commit":  "76d28640251c0403f2c11deac9b0b2d7ee3759d0"
+             },
+    "et":  {
+               "repo":  "systemanalysisdpt-cmc-msu/ellipsoids",
+               "commit":  "715ed570b52fc4c04bb86994b0cbeaa7b5fa0b37"
+           }
+}

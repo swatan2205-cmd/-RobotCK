@@ -1,0 +1,12 @@
+failed
+Error using assert
+Reference bound exceeds robust input radius
+
+Error in controller_step (line 17)
+assert(sets.assumptionOK,'RobotCK:InfeasibleSets','Reference bound exceeds robust input radius');
+
+Error in simulate_case (line 13)
+        [req,applied,memory,diagnostic]=controller_step(run.q(:,k),rk,c,sets,memory);
+
+Error in run_suite (line 21)
+    for repetition=1:c.timingRepeats, repeats{repetition}=simulate_case(c,sets); end

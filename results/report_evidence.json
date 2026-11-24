@@ -1,0 +1,16 @@
+{
+  "baseline": {
+    "samples": 293,
+    "controlDuration": 43.949999999999996,
+    "metricDuration": 43.8,
+    "rmsePrecontrol": 0.073645816330194458,
+    "iaePrecontrol": 0.62267180896386909,
+    "maxErrorPrecontrol": 0.6,
+    "maxWheel": 9.9997723325403918,
+    "violationCount": 0
+  },
+  "comparison": {
+    "maxPositionComponent": 9.8365809247935587E-10,
+    "maxHeadingDifference": 3.9674433960357192E-8
+  }
+}

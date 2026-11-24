@@ -1,0 +1,469 @@
+         A Set-Theoretic Control Approach to the
+       Trajectory Tracking Problem for Input-Output
+            Linearized Wheeled Mobile Robots
+                         Cristian Tiriolo Student Member, IEEE and Walter Lucia Member, IEEE
+
+
+
+
+   Abstract— This paper proposes a set-theoretic receding                       two MPC formulations is achieved when linear MPC for-
+horizon control scheme to address the trajectory track-                         mulations are obtained starting from a feedback-linearized
+ing problem for input-constrained differential-drive robots.                    representation of the nonlinear vehicle model. In particular,
+The proposed solution is derived starting from an input-
+output linearized description of the robot kinematics and                       such an approach allows to define simple linear and convex
+a worst-case characterization of the orientation-dependent                      MPC optimization problems that use exact linearization, see,
+input constraint acting on the feedback linearized model.                       e.g., [8]. Unfortunately, such an advantage vanishes if the
+In particular, offline, given a worst-case characterization                     vehicle is subject to input constraints that, under feedback
+of the constraint set, we analytically design the smallest                      linearization, translate into time-varying and state-dependent
+robust control invariant region for the tracking error. More-
+over, such a region is recursively enlarged by computing                        constraints causing nonconvex MPC formulations [9]. To the
+a family of robust one-step controllable sets whose union                       best of the author’s knowledge, the first tracking controller
+characterizes the controller’s domain of attraction. Online,                    capable of dealing with input-constrained feedback-linearized
+such sets and the knowledge of the current robot’s orien-                       differential-drive robot models has been proposed in [10].
+tation are leveraged to define a non-conservative control                       The resulting solution, although effective, does not exploit
+law ensuring bounded tracking error. The effectiveness of
+the proposed strategy is experimentally validated using a                       the orientation and the derivatives of the reference trajectory,
+Khepera IV robot, and its performance is contrasted with                        which might affect the tracking performance.
+four alternative trajectory tracking algorithms.
+  Index Terms— Trajectory tracking, wheeled                         mobile      A. Paper’s contributions
+robots, set-theoretic receding horizon control
+                                                                                   In this paper, we propose a novel trajectory tracking RHC
+                                                                                for input-constrained differential-drive robots. The proposed
+                          I. I NTRODUCTION
+                                                                                solution adapts the Set-Theoretic Receding Horizon Control
+   Mobile robots are becoming increasingly popular in the                       (ST-RHC) algorithm introduced in [11] to deal with the
+manufacturing and transportation industry, and search ad res-                   time-varying constraints acting on the input-output feedback
+cue operations [1]. To effectively perform various autonomous                   linearized model of the robot. In particular, we characterize
+and cooperative control tasks it is crucial for the robots to                   the linearized error dynamics as a constrained linear system
+accurately follow a desired trajectory [2]. This is a challenging               subject to a bounded disturbance depending on the reference
+problem due to nonholonomic constraints, model inaccuracies,                    trajectory. Worst-case arguments on the disturbance and input
+saturation constraints, and sensor noise. In the last decades,                  constraint sets are leveraged to offline design a stabilizing
+a wide range of trajectory tracking control schemes has been                    feedback controller associated with the smallest robust control
+proposed in the literature, ranging from backstepping nonlinear                 invariant region. Also, a family of robust one-step controllable
+controllers [3], to Lyapunov-based strategies [4] and Model                     sets is computed to enlarge the controller’s tracking domain
+Predictive Control (MPC) [5]. For the MPC solutions, both                       and allow large initial tracking errors. Online, the conserva-
+nonlinear and linear formulations have been investigated. The                   tiveness of the offline solution is mitigated by exploiting the
+firsts rely on accurate nonlinear models for predicting the                     knowledge of the current robot’s orientation and trajectory-
+trajectory of the vehicles; consequently, they suffer from                      dependent disturbance. The effectiveness of the resulting RHC
+high computational complexity and local minima [6]. On the                      strategy is validated by means of laboratory experiments.
+other hand, linear formulations present reduced computational                   Although the proposed solution borrows from [10] the worst-
+burdens, but they are characterized by suboptimality due to                     case characterization of the input constraint set acting on the
+the approximations introduced to describe the system with                       feedback linearized differential-drive robot (see Lemma 2),
+a linear model [7]. An interesting trade-off between these                      there are some key differences between the two strategies.
+   This work was supported by the Natural Sciences and Engineering              The approach in [10] solves a trajectory tracking problem via a
+Research Council of Canada (NSERC).                                             waypoint approach, while here a more challenging and general
+   Cristian Tiriolo and Walter Lucia are with the Concordia Institute for In-   trajectory tracking problem is considered. The consequence of
+formation Systems Engineering (CIISE), Concordia University, Montreal,
+QC, H3G 1M8, CANADA, cristian.tiriolo@concordia.ca,                             the above is that unlike [10], the feedback-linearized vehicle’s
+walter.lucia@concordia.ca                                                       error dynamics are now subject to an additional bounded
+disturbance term related to the desired reference trajectory.         B. Set-Theoretic Receding Horizon Control Scheme
+Moreover, differently from [10], the proposed solution is capa-          The constrained system (2) can be stabilized using the ST-
+ble of exploiting a larger set of information about the reference     RHC scheme proposed in [11]. Such a dual-mode receding
+trajectory (e.g., reference timing law and its derivatives), which    horizon control strategy can be summarized as follows:
+results in improved tracking performance (see Table I). In [10],      - Offline: First, by considering model (2) in a disturbance-
+the waypoint tracking controller is developed by extending            free scenario (i.e., d(k) = 0, ∀ k), design a state-feedback
+the LMI-based receding horizon control framework developed            controller u(k) = −Kz(k) such that A−BK is asymptotically
+in [12]. On the other hand, the proposed robust controller            stable. Then, compute the smallest RCI region, namely T 0 ,
+(Section III-C) is developed by extending the robust set-             associated to the controlled system. Finally starting from T 0 ,
+theoretic model predictive control paradigm developed in [11].        recursively apply Definition 4 to build a family of ROSC
+Finally, unlike [10], the proposed solution ensures that the          sets T i until the set growth saturates (i.e., T i+1 = T i ) or
+tracking error trajectory is uniformly ultimately bounded, in a       the desired state-space region is covered. Store the computed
+finite number of steps, in the smallest robust control invariant      family {T i }N
+                                                                                   i=1 , where N is the number of computed ROSC
+region.                                                               sets.
+    II. P RELIMINARIES AND PROBLEM FORMULATION                        - Online (∀ k): Determine the smallest set-membership index
+                                                                      i(k) of the ROSC set T i(k) containing z(k). Then
+A. Preliminaries
+                                                                         • if i(k) = 0, then apply u(k) = −Kz(k)
+  Definition 1: Given two sets A, B ⊂ IRn , their                        • else solve the following convex optimization problem:
+Minkowski/Pontryagin sum (⊕) and difference (⊖) are [13]:
+                                                                                        u(k) = arg min J(z(k), u) s.t.
+        A⊕B        := {a + b : a ∈ A, b ∈ B}                                                        u                               (4)
+                                 n                                                  Az(k) + Bu ∈ (T i(k)−1 ⊖ D),         u∈U
+       A ⊖ B := {a ∈ IR : a + b ∈ A, ∀b ∈ B}.
+  Definition 2: Given the ellipsoidal set                                  where J(z(k), u) is a convex cost function.
+               n
+ E := {z ∈ IR : z E  T   −1                 T
+                              z ≤ 1}, E = E > 0, E ∈ IR       n×n        Property 2: The ST-RHC controller enjoys the following
+                                                                      properties [11]: (i) The optimization (4) enjoys recursive
+and a matrix M ∈ IRn×n , then [14]                                    feasibility; (ii) The state trajectory is uniformly ultimately
+         M E := {z ∈ IRn : z T (M EM T )−1 z ≤ 1}                     bounded in T 0 in at most N steps.
+  Property 1: Given two ball sets C1 and C2 in the form:
+        C1 := {z ∈ IR2 : z T Q−1                Q1 = rC21 I           C. Robot’s Modeling
+                              1 z ≤ 1},
+                                                                (1)
+        C2 := {z ∈ IR2 : z T Q−1
+                              2 z ≤ 1},         Q2 = rC22 I              A slippage-free differential-drive robot can be described
+where rC1 and rC2 are the radii of C1 and C2 , respectively, the      through the following discrete-time nonlinear model [10]:
+Minkowski sum of C1 and C2 is defined as follows:                        x(k + 1) =      x(k) + Ts R2 (ωR (k) + ωL (k)) cos(θ(k))
+ C1 ⊕ C2 = {z ∈ IR2 : z T Q−1          2                                 y(k + 1) =      y(k) + Ts R2 (ωR (k) + ωL (k)) sin(θ(k))
+                           s z}, Qs = rs I, rs = rC1 + rC2                                         R
+                                                                         θ(k + 1) =      θ(k) + Ts D  (ωR (k) − ωL (k))
+while, assuming rC1 > rC2 the Minkowski difference can be                                                                          (5)
+computed as follows:                                                  where, Ts > 0 is the sampling time of the system, q =
+ C1 ⊖ C2 = {z ∈ IR2 : z T Q−1          2                              [x, y, θ]T the robot’s pose (i.e., Cartesian position of the
+                           d z}, Qd = rd I, rd = rC1 − rC2
+                                                                      robot’s center of mass and orientation), R is the radius of the
+and given M ∈ IR2×2 = mI, M C1 = {z ∈ IR2 : z T Q−1    a z ≤          wheels and D is the wheel’s axis length, while ωR , ωL ∈ IR
+1}, Qa = ra2 I, ra = mrC1 .                                           are the control inputs, i.e., the left and right wheels’ angular
+  Definition 3: A function f (t) : IR → IRn is said uniformly         velocities subject to the following box-like constraints:
+bounded and smooth if ∀t, ∃Γ > 0 : ∥f (t)∥ < Γ and f (t) ∈                                                           T
+C2.                                                                           Ud = {[ωR , ωL ]T ∈ IR2 : Hd [ωR , ωL ] ≤ 1},         (6)
+Consider the following discrete-time linear system:                                         −1          1        T
+                                                                                                Ω
+                                                                                                     0   Ω
+                                                                                                              0
+ z(k + 1) = Az(k) + Bu(k) + d(k), u(k) ∈ U, d(k) ∈ D (2)                             Hd =           −1                              (7)
+                                                                                                0    Ω
+                                                                                                         0 Ω1
+where k ∈ ZZ := {0, 1, . . .}, z ∈ IRn , u ∈ IRm , d ∈ IRn and        where Ω is the maximum angular velocity of the wheels.
+U ⊂ IRm , D ⊂ IRn are compact and convex sets containing                 The differential-drive kinematics (5) can be recast into a
+the origin.                                                           unicycle model (see Fig. 1) by the means of the following
+   Definition 4: Consider the constrained system (2) and a            transformation:
+target set T i ⊂ IRn . The set of states T i+1 ⊂ IRn Robust                                                  r     r
+                                                                                                                           
+One-Step Controllable (ROSC) to T i for (2) is defined as:                     v(k)             ωR (k)             2    2
+                                                                                        =T               , T = r                (8)
+                                                                               ω(k)             ωL (k)             d  − dr
+T i+1 := {z ∈ IRn : ∃u ∈ U s.t. Az + Bu + d ∈ T i , ∀d ∈ D}
+                                                                      obtaining:
+                                                          (3)
+   Definition 5: The set Σ ⊂ IRn is said to be Robust Control                      x(k + 1) =    x(k) + Ts v(k) cos(θ(k))
+Invariant (RCI) for (2) if                                                         y(k + 1) =    y(k) + Ts v(k) sin(θ(k))           (9)
+        ∀z ∈ Σ, ∃u ∈ U : Az + Bu + d ∈ Σ, ∀d ∈ D                                   θ(k + 1) =    θ(k) + Ts ω(k)
+where v, ω ∈ IR are the longitudinal and angular velocities of            recasts the unicycle model (9) into the following two-single
+the robot. Consequently, the input constraint set (6), mapped             discrete-time integrator model [10, Property 1]:
+into the unicycle input space, transforms into a rhombus-
+like set, Uu ⊂ IR2 , 02 = [0, 0]T ∈ Uu , which defines the                 z(k + 1) = Az(k) + Bu(k), A = I2×2 , B = Ts I2×2 (14a)
+admissible longitudinal and angular velocities, i.e.,                                             − sin θ(k)u1 (k) + cos θ(k)u2 (k)
+                                         T
+                                                                             θ(k + 1) = θ(k) + Ts
+  Uu = {[v, ω]T ∈ IR2 : Hu [v, ω] ≤ 1}, Hu = Hd T −1 (10)                                                         b
+                                                                                                                                 (14b)
+
+                                                                          where u(k) = [u1 (k), u2 (k)]T ∈ IR2 are the control inputs of
+                                                                          the feedback-linearized robot model. Note that (14b) defines
+                                                                          a nonlinear internal dynamics decoupled from (14a).
+
+
+                                                                          B. Input-Ouput Linearized Error Dynamics
+
+                          (a)                   (b)
+                                                                             Given qr (k) and the transformation (12), the reference
+                                                                          trajectory for feedback linearized robot’s model is
+Fig. 1. (a) differential-drive, (b) unicycle.
+                                                                                                                                     T
+                                                                                       zr =       xr + b cos θr , yr + b sin θr               (15)
+D. Problem formulation                                                    By defining the linearized tracking error as z̃(k) = z(k) −
+   Consider a bounded and smooth 2D-trajectory described                  zr (k), we have that
+in terms of Cartesian position (xr (t), yr (t)), velocity
+(ẋr (t), ẏr (t), and acceleration (ẍr (t), ÿr (t)), where t ∈ IR+ .        z̃(k + 1) = Az(k) + Bu(k) − Azr (k) − Bur (k)
+Then, the robot’s reference orientation θr (t), longitudinal                              = Az̃(k) + Bu(k) + d(k)                             (16)
+velocity vr (t) and angular velocity ωr (t) are [2]:
+                                                                          where d(k) = −Bur (k) and
+                                " p                              #
+                                        ẋr (t)2 + ẏr (t)2
+                        
+                 vr (t)
+                           =       ÿr (t)ẋr (t)−ẍr (t)ẏr (t)
+                 ωr (t)                                            (11)                                                               T
+                                         ẋr (t)2 +y˙r (t)2
+                                                                                       ur (k) = TF−1
+                                                                                                   L (θr (k)) [vr (k), ωr (k)]                (17)
+                    θr (t) = ATAN2 (ẏr (t), ẋr (t))
+    Remark 1: The forward Euler discretization of (11) rep-               is the reference input associated to the trajectory.
+resents a solution for the discrete-time unicycle model (9).                 Remark 2: If the reference trajectory is bounded, then d(k)
+Moreover, a procedure to compute θr (t), and ωr (t) when                  is a bounded disturbance with d(k) ∈ D ⊂ IR2 . Moreover, if
+ẋr (t), ẏr (t) = 0 can be found in [2].                                 d(k) is a-priori known, then D can be over-approximated with
+    Problem 1: Consider the input-constrained differential-               a ball of radius rd , i.e,
+drive robot model (5)-(7) and a bounded and smooth trajec-
+                                      T
+tory qr (k) = [xr (k), yr (k), θr (k)] obtained by means of a                   D = {d ∈ IR2 : dT Q−1                    2
+                                                                                                     d d ≤ 1}, Qd = rd I2×2       (18)
+forward Euler discretization of (11), with k ∈ {0, 1, . . . , kf }.         Lemma 1: [15] If u(·) stabilizes (16), the point B tracks
+Design a trajectory tracking control law [ωR (k), ωL (k)]T =              any reference trajectory with a bounded internal dynamics.
+ϕ(k, q(k), qr (k)) ∈ Ud such that the tracking error q̃(k) =              Consequently, also the tracking error q̃(k) is bounded.   □
+q(k) − qr (k) remains bounded ∀k ≥ 0.                                       Lemma 2: [10, Section III.B] The set of admissible in-
+                                                                          puts for (16) is the following time-varying and orientation-
+                  III. P ROPOSED S OLUTION
+                                                                          dependent polyhedral set
+   In this section, first, the feedback-linearized tracking-error
+dynamics are derived, and its time-varying input constraints                                         T
+                                                                                U(θ) = {[u1 , u2 ] ∈ IR2 : H(θ) [u1 , u2 ] ≤ 1},
+                                                                                                                                  T
+are discussed. Then, the ST-RHC scheme (see Section II-B)                                         = Hd T −1 TF L (θ) =
+is tailored to solve the considered problem.                                          DH(θ)
+                                                                                          sin θ−2 cos θb   −D cos θ−2 sin θb
+                                                                                                                             
+                                                                                      −D sin2ΩRb
+                                                                                              θ−2 cos θb
+                                                                                                                     2ΩRb
+                                                                                                                D cos θ−2 sin θb             (19)
+A. Linearized Vehicle Model via Feedback Linearization                             =  −D sin2ΩRb
+                                                                                     
+                                                                                              θ+2 cos θb
+                                                                                                                     2ΩRb
+                                                                                                                D cos θ+2 sin θb
+                                                                                                                                          
+                                                                                                                                          
+                                                                                             2ΩRb                    2ΩRb
+                                                                                                                                         
+  Consider a scalar b > 0 and two new outputs                                             D sin θ+2 cos θb      −D cos θ+2 sin θb
+                                              T                                              2ΩRb                  2ΩRb
+   z(k) = x(k) + b cos θ(k), y(k) + b sin θ(k)      (12)
+                                                                          which admits the following worst-case internal and circular
+representing the coordinates of an external point B displaced
+                                                                          approximation:
+at a distance b from the robot’s center of mass (see Fig. 1.b).
+Then, the following state-feedback law                                           \
+                                                                      Û =    U(θ) = {u ∈ IR2 |uT Q−1                 2
+                                                                                                         u u ≤ 1}, Qu = ru I2×2
+     v(k)               u (k)                  cos θ sin θ                        ∀θ
+            = TF L (θ) 1         , TF L (θ) = − sin θ cos θ                                                                                   (20)
+     ω(k)               u2 (k)                   b      b                             2ΩRb
+                                                            (13)          where ru = √4b 2 +D 2
+                                                                                                .
+C. Proposed Receding Horizon Controller                            is computed as
+   Here, the control scheme presented in Section II-B is tai-                   i(k) := min{i : z̃(k)T Q−1
+                                                                                                         i z̃(k) ≤ 1}        (24)
+lored to solve constrained trajectory tracking problem starting       The solution described in Remark 4 is conservative because
+from the tracking error dynamics (16) and its worst-case input     it uses the worst-case input constraint set Û ⊂ U(θ), ∀θ and
+constraint set (20).                                               it assumes that d(k) = −Bur (k) is an unknown disturbance.
+   Assumption 1: The set B Û contains D.                    □     However, online and for any k, both d(k) and U(θ) can be
+   Remark 3: Assumption 1 ensures that the controller has          determined starting from the reference trajectory qr (k) and
+sufficient authority over the disturbance caused by the ref-       robot’s orientation θ(k), respectively. By taking advantage of
+erence trajectory. It can be offline verified, and it imposes a    such information, the following proposition describes a non-
+feasibility condition for the reference trajectory.                conservative control strategy solving Problem 1.
+The linearized robot error dynamics (16) are subject to the
+time-varying input constraint U(θ(k)) and bounded distur-          Algorithm 1 Tracking Set-Theoretic Receding Horizon Con-
+bance d(k) = −Bur (k) ∈ D. Consequently, to perform the            troller (T-ST-RHC)
+offline phase of the ST-MPC scheme, the only possibility is to     Offline:
+consider the worst-case input constraint Û ⊂ U(θ(k)), ∀θ(k)        1: Set U = Û, K = B −1 , T 0 = D; Build {T i }N
+                                                                                                                   i=1 using
+(see (20)) to compute the RCI region T 0 and a family of                (22); Store {T i }N
+                                                                                          i=0 .
+ROSC sets T i that are valid ∀θ(k). Nevertheless, online, such
+                                                                   Online:
+a source of conservativeness will be mitigated exploiting the
+knowledge of θ(k) to determine the actual input constraint          1: Measure x(k), y(k), θ(k) and compute z̃(k) = z(k) −
+U(θ(k)), ∀ k. The following propositions show that for the             zr (k), with z(k) as in (12), zr (k) as in (15);
+linearized robot error dynamics, the sets T 0 and ROSC sets         2: Compute U(θ) as in (19) and ur (k) as in (17);
+T i can be analytically computed.                                   3: Find i(k) as in (24);
+   Proposition 1: Consider the model (16) under the con-            4: if i(k) > 0, then
+straint u(k) ∈ Û and disturbance d(k) ∈ D. The terminal                               u(k) = arg min J(x, u) s.t.                  (25a)
+set T 0 = D is the smallest RCI set under the control law                                                 u
+                                                                                                              i(k)−1
+                                                                          Az̃(k) + Bu − Bur (k) ∈ T                    , u ∈ U(θ)   (25b)
+                       u(k) = −B −1 z̃(k)                   (21)
+                                                                    5: else
+     Proof: First, under Assumption 1, ∀ z̃ ∈ D, the control
+                                                                                   u(k) = −B −1 z̃(k) + ûr (k), where               (26)
+law u = −B −1 z̃ ∈ Û, or equivalently that B −1 D ⊂ Û.
+Indeed, by noticing that B is invertible, B −1 D ⊂ Û ⇐⇒                      ûr (k) = arg min ∥ûr − ur (k)∥22 s.t.               (27a)
+                                                                                             ûr
+−B −1 Qd (−B −1 )T ≤ Qu ⇐⇒ Trds ≤ ru . By cross multi-                                       −1
+                                                                                        −B         z̃(k) + ûr ∈ U(θ)               (27b)
+plying the last inequality by B −1 on the left and (B −1 )T on
+the right, we obtain BB −1 Qd (B −1 )T B T ≤ BQu B T ⇐⇒             6: end if
+Qd ≤ BQu B T          ⇐⇒ rd ≤ Ts ru ⇐⇒ D ⊆ B Û.                    7: Compute
+Now, if d(k) = 0, ∀ k, and u(k) = −B −1 z̃(k) we have that                                            T
+                                                                                    [ωr (k), ωL (k)] = T −1 TF L u(k)                (28)
+z̃(k + 1) = Az̃(k) + B(−B −1 )z̃(k) = z̃(k) − z̃(k) = 02 .
+Consequently, for any disturbance realization d(k) ∈ D, it is          and apply it to the robot; k ← k + 1, go to 1;
+also true that the one-step evolution is bounded by D and that
+T 0 = D is the smallest RCI set.                                                                        SN
+                                                                      Theorem 1: For any z̃(0) ∈ i=0 T i , the tracking ST-
+   Proposition 2: Consider the model (16) under the con-           RHC strategy described in Algorithm 1 provides a solution
+straint u(k) ∈ Û and disturbance d(k) ∈ D. Given a target         to Problem 1.
+ball set T i−1 ⊂ IR2 of radius ri−1 > 0, the set of states ROSC          Proof: The proof can be divided in four parts:
+to T i−1 is                                                        (I) - Opt (25) always admits a solution. First, by construction,
+                                                                   the optimization (4) is feasible for any d ∈ D (see Property 1).
+     T i = {z̃ ∈ IR2 : z̃ T Q−1
+                             i z̃ ≤ 1},   Qi = ri2 I2×2    (22)    Consequently, (25) is admissible because the input constraint
+                    ri = ri−1 − rd + Ts ru                  (23)   set is enlarged (i.e., U(θ) ⊃ Û, ∀θ(k)) and the conservative
+     Proof: The set T i ROSC to T i−1 for (16) can be              Minkowski difference is replaced by d(k).
+computed as T i = ((T i−1 ⊖ D) ⊕ (−B Û))A, see [13, Sec.          (II) - Opt (27) is always feasible and T 0 is RCI under u(k) =
+11.3.2]. Since D, Û, T i−1 are ball sets and A = I2×2 ,           −B −1 z̃(k) + ûr (k). Indeed, ûr (k) = 0 is always a feasible
+B = Ts I2×2 , then also T i is a ball of radius ri computed        solution that corresponds to the terminal control law for which
+as in (23) (see Property 1), concluding the proof.                 T 0 is RCI for any d(k) ∈ D, see Proposition 1. On the
+  Remark 4: Given the results of Propositions 1-2, it is           other hand, the opt. (27) selects the optimal ûr (k), compatible
+possible to solve Problem 1 by implementing the ST-RHC             with the input constraint U(θ), that compensates (totally or
+controller detailed in Section II-B, where: (2) is replaced by     partially) for the disturbance realization d(k) = −B ûr (k).
+(16); K = B −1 , T 0 = D as in Proposition 1; U = Û (i.e., the    Consequently, if z̃(k) ∈ T 0 , then z̃(k + j) ∈ T 0 , ∀ j ≥ 1 and
+worst-case input constraint set (20)); {T i }N
+                                             i=1 are recursively   u(k + j) ∈ U(θ), ∀j ≥ 0.
+computed as in Proposition 2. the set-membership index i(k)        (III) - Feasibility and Uniformly Ultimately Boundedness
+(UUB). Recursive feasibility trivially holds since, by construc-     (18) is a ball of radius rd = 0.0287 and that Û is a ball
+tion, both (25) and (27) always admits a feasible solution com-      of radius ru = 0.1982 (see (20)). Consequently, since B Û
+patible with the given constraints and worst-case disturbance        is a ball of radius Ts ru = 0.0297, the condition D ⊂ B Û
+                      SN starting from any admissible initial
+realization. Consequently,                                           is satisfied, see Assumption 1. To cover the initial tracking
+                                                                                                                       T
+tracking error z̃(0) ∈ i=0 T i , the set-membership index i(k)       error z̃(0) = zr (0) − z(0) = [0.4106, −0.0447] , a family of
+monotonically decreases, at each k, until i = 0 is reached.          N = 396 ROSC sets has been computed using (22). Moreover,
+Consequently, the tracking error of the feedback linearized          the ST-RHC algorithm has been configured to use a multi-
+model reaches the RCI set T 0 in at most N steps where it is         objective cost function J(z̃, u) = ∥Az̃(k) + Bu − Bur (k)∥22 +
+UUB under the effect of (26).                                        0.5∥u∥22 , where the first term takes into account the tracking
+(IV) - Bounded tracking error. First, u(k) computed by Al-           error and the second one the control effort.
+gorithm 1 stabilizes the feedback linearized error dynamics.            The obtained experimental results are shown in Figs. 3-5
+Therefore, given the result of Lemma 1, the input trans-             and Table I. Fig. 3 shows the reference robot’s trajectories
+formation (13), the control law (28) solves the considered           where it can be noted that the proposed T-ST-MPC strategy,
+reference tracking problem with a bounded tracking error q̃(k),      similarly to [5], [10], allows the robot’s trajectory to quickly
+concluding the proof.                                                converge to the reference. Indeed, from Fig. 4 it is evident that
+   Remark 5: As prescribed by Algorithm 1, the quadratically         the tracking error enters the RCI region T 0 at k = 1.8[sec]
+constrained quadratic program (25) must be solved, at most,          where it remains confined thereafter. In the same figure, it
+for the first N steps (until T 0 is reached). Afterward, the         is possible to appreciate how the compensated control action
+linearly constrained quadratic program (27) is solved.               (26) allows z̃(k) to remain bounded in a neighborhood of
+                                                                     the origin that is much smaller than the worst-case region
+                IV. E XPERIMENTAL R ESULTS                           T 0 (obtained for ûr (k) = 0, ∀ k). Fig. 5 shows that the
+   The proposed trajectory tracking control has been validated       computed left and right wheel angular velocities fulfill the
+by means of hardware-in-the-loop laboratory experiments car-         prescribed constraints and that the robot’s orientation error
+ried out using a Khepera IV differential-drive robot. A demo         remains bounded. Furthermore, the bottom subplot of Fig. 5
+of the hereafter presented experiment can be found at the            shows the time evolution of e(t). Table I summarizes and
+following web link: https://youtu.be/A0Tlbgr08tY.                    contrasts the tracking performance of the proposed T-ST-RCH
+The robot parameters are R = 0.021 [m] , D = 0.1047 [m] ,            strategy with the selected alternative schemes. The obtained
+the maximum velocity is set to Ω = 10 [rad/sec] , and Ts =           numerical results confirm that the tracking performance ob-
+0.15 [sec] The robot’s pose vector has been estimated using          tained by T-ST-RHC is superior to the ones obtained by
+the wheels encoder’s measurements and odometry calculations          the competitors. The latter can be justified as follows. The
+as outlined in [2]. Algorithm 1 has been implemented on              controller in [10] only used instantaneous information about
+a Windows 10 computer equipped with an Intel i7-8750H                the (xr , yr ) coordinates of the reference trajectory, while the
+processor and Matlab R2022b. The optimizations (25) and              proposed solution exploits their first and second derivatives.
+(27) have been solved using the Matlab’s functions fmincon           The solutions [2], [4], [5] are developed without explicitly
+and quadprog, respectively. Moreover, a wireless TCP channel         taking into account the robot’s maximum velocity constraints.
+has been used for communicating with the robot, see Fig. 2.          Consequently, saturation phenomena arising from the large
+The performance of the proposed tracking algorithm has been          initial tracking error degrade their performance. Finally, the
+compared with four alternative strategies: (i) the RHC strategy      average CPU times required by the proposed solution to solve
+developed by the same authors in [10], (ii) the Lyapunov-based       (27) and (25) are 1.58 [ms] and 13.02 [ms]. On the other
+controller in [4], (iii) the unconstrained linear MPC solution       hand, the CPU times of the competitor’s control laws are
+in [5], (iv) the dynamic feedback-linearization controller in        2.1 [ms] for [10], 0.78 [ms] for [5], 0.025 [ms] for [2], and
+[2]. All the competitor schemes have been configured using           0.032 [ms] for [4].
+the same parameters p described in [10, Sec. IV.A]. By denot-                   T-ST-RHC
+ing with e(t) =        (xr (t) − x(t))2 + (yr (t) − y(t))2 the 2-                                                Khepera IV
+
+norm of the position tracking error, the tracking performance
+has been evaluated using R kf four different indices: (a) integral
+absolute error (IAE) ( 0 |e(t)|dt), (b) integral square error                   Computer           Wi-Fi           Robot
+        Rk
+(ISE) ( 0 f e(t)2 dt), (c) integral time-weighted absolute error
+         Rk
+(ITAE) ( 0 f t|e(t)|dt), (d) integral time squared error (ITSE)
+ R kf
+( 0 te(t)2 dt). The performed experiments have considered            Fig. 2. Hardware-in-the-loop setup with Khepera IV.
+the following lemniscate trajectory (see Fig. 3)
+                                  t
+                                    
+        xr (t)         0.6 sin( 3.5  )
+                =                        , t ∈ [0, kf ] , kf = 44
+        yr (t)          0.6 sin( 7t )                                                        V. C ONCLUSIONS
+                                                            T
+with a robot’s initial pose q(0) = [x(0), y(0), θ(0)] =                 In this paper, a novel set-theoretic receding horizon control
+           T
+[0.6, 0, π] . It is straightforward to verify that for the given     strategy has been proposed to solve the trajectory tracking
+trajectory and robot constraints, the associated disturbance set     problem for input-constrained differential-drive robots. By
+           0.8
+                                                                                                                                                           TABLE I
+           0.6                                                                                                                             AVERAGE T RACKING PERFORMANCE I NDICES .
+                                                                                                                                               IAE            ISE              ITAE           ITSE
+           0.4
+                                                                                                                               T-ST-RHC        0.690          0.225            1.942          0.148
+                                                                                                                                  [10]         1.433          0.258            19.320         0.560
+           0.2
+                                                                                                                                   [4]         1.767          0.400            10.653         0.735
+                                                                                                                                   [5]         2.853          0.378            53.130         3.341
+               0
+                                                                                                                                   [2]         1.421          0.325            6.503          0.554
+          -0.2                                                                                        T-ST-RHC
+                                                                                                     [10]
+                                                                                                     [4]
+          -0.4                                                                                                               constraint set has been exploited to offline design the smallest
+                                                                                                     [5]
+          -0.6
+                                                                                                     [2]                     control invariant region for the tracking error and a family
+                                                                                                     Reference
+                                                                                                     Initial point
+                                                                                                                             of robust one-step controllable sets whose union characterizes
+          -0.8                                                                                                               the worst-case domain of attraction of the proposed controller.
+               -0.8    -0.6        -0.4          -0.2        0         0.2        0.4           0.6 0.8
+                                                                                                                             Then, online, non-conservative, and constraint-admissible con-
+                                                                                                                             trol inputs have been computed resorting to a receding horizon
+Fig. 3. Trajectories performed by the robot.
+                                                                                                                             strategy exploiting the knowledge of the robot’s orientation
+                                                                                                                             and reference trajectory. Experimental results obtained using
+        0.5                                                                  Tracking Error Trajectory                       a Khepera IV differential-drive robot and comparison with
+        0.4                                                                  Terminal RCI region
+                                                                                                                             four alternative schemes have shown the superior tracking
+                                                                             ROSC regions
+        0.3                                                                                                                  performance of the proposed solution.
+                                                                             Initial Tracking Error
+
+        0.2                                                                                                                                                   R EFERENCES
+        0.1                                                                                                                   [1] F. Rubio, F. Valero, and C. Llopis-Albert, “A review of mobile robots:
+                                                                                                                                  Concepts, methods, theoretical framework, and applications,” Int. Jour-
+          0                                                                                                                       nal of Advanced Robotic Systems, vol. 16, no. 2, 2019.
+        -0.1                                                                                                                  [2] G. Oriolo, A. De Luca, and M. Vendittelli, “Wmr control via dynamic
+                                                                                                                                  feedback linearization: design, implementation, and experimental valida-
+        -0.2                                                                                                                      tion,” IEEE Transactions on control systems technology, vol. 10, no. 6,
+                                                                                                                                  pp. 835–852, 2002.
+        -0.3                                                                                                                  [3] X. Wu, P. Jin, T. Zou, Z. Qi, H. Xiao, and P. Lou, “Backstepping
+                                                                                                                                  trajectory tracking based on fuzzy sliding mode control for differential
+        -0.4                                                                                                                      mobile robots,” Journal of Intelligent & Robotic Systems, vol. 96, pp.
+        -0.5                                                                                                                      109–121, 2019.
+          -0.5 -0.4 -0.3 -0.2 -0.1                               0     0.1 0.2 0.3 0.4 0.5                                    [4] S. Blažič, “A novel trajectory-tracking control law for wheeled mobile
+                                                                                                                                  robots,” Robotics and Autonomous Systems, vol. 59, no. 11, pp. 1001–
+Fig. 4. Computed {T i } and trajectory tracking error for the feedback                                                            1007, 2011.
+linearized robot. For the sake of clarity, only some of the computed                                                          [5] G. Klančar and I. Škrjanc, “Tracking-error model-based predictive con-
+ROSC sets are shown.                                                                                                              trol for mobile robots in real time,” Robotics and autonomous systems,
+                                                                                                                                  vol. 55, no. 6, pp. 460–469, 2007.
+                                                                                                                              [6] F. Eiras, M. Hawasly, S. V. Albrecht, and S. Ramamoorthy, “A two-
+               T-ST-RHC              [10]                        [4]                         [5]                     [2]
+ 10                                                                                                                               stage optimization-based motion planner for safe urban driving,” IEEE
+  8
+  6
+                                                                                                                                  Transactions on Robotics, vol. 38, no. 2, pp. 822–834, 2021.
+  4                                                                                                                           [7] C. Tiriolo and W. Lucia, “On the design of control invariant regions for
+  2                                                                                                                               feedback linearized car-like vehicles,” IEEE Control Systems Letters,
+  0                                                                                                                  R,MAX
+
+ 10                                                                                                                               vol. 7, pp. 739–744, 2022.
+  8                                                                                                                           [8] M. A. Kamel, X. Yu, and Y. Zhang, “Fault-tolerant cooperative control
+  6
+  4
+                                                                                                                                  design of multiple wheeled mobile robots,” IEEE Transactions on
+  2                                                                                                                               Control Systems Technology, vol. 26, no. 2, pp. 756–764, 2017.
+                                                                                                                     L,MAX
+  0
+  6                                                                                                                           [9] M. J. Kurtz and M. A. Henson, “Input-output linearizing control of
+  5
+  4
+                                                                                                                                  constrained nonlinear processes,” Journal of Process Control, vol. 7,
+  3                                                                                                                               no. 1, pp. 3–17, 1997.
+  2
+  1
+                                                                                                                      ref
+                                                                                                                             [10] C. Tiriolo, G. Franzè, and W. Lucia, “A receding horizon trajectory
+  0
+  0.4
+                                                                                                                                  tracking strategy for input-constrained differential-drive robots via feed-
+  0.3
+                                                                                                                                  back linearization,” IEEE Transactions on Control Systems Technology,
+  0.2
+                                                                                                                                  vol. 31, no. 3, pp. 1460–1467, 2022.
+  0.1
+                                                                                                                             [11] D. Angeli, A. Casavola, G. Franzè, and E. Mosca, “An ellipsoidal
+   0
+                                                                                                                                  off-line mpc scheme for uncertain polytopic discrete-time systems,”
+    0              5          10            15          20
+                                                             t[sec]
+                                                                       25             30              35     40         44        Automatica, vol. 44, no. 12, pp. 3113–3119, 2008.
+                                                                                                                             [12] M. V. Kothare, V. Balakrishnan, and M. Morari, “Robust constrained
+Fig. 5. Wheels angular velocities, robot’s orientation, and norm of the                                                           model predictive control using linear matrix inequalities,” Automatica,
+tracking error.                                                                                                                   vol. 32, no. 10, pp. 1361–1379, 1996.
+                                                                                                                             [13] F. Borrelli, A. Bemporad, and M. Morari, Predictive control for linear
+                                                                                                                                  and hybrid systems. Cambridge University Press, 2017.
+                                                                                                                             [14] A. Kurzhanski and I. Vályi, Ellipsoidal calculus for estimation and
+considering an input-output linearized description of the ve-                                                                     control. Springer, 1997.
+                                                                                                                             [15] D. Wang and G. Xu, “Full-state tracking and internal dynamics of
+hicle kinematics, the strategy has been designed to take into                                                                     nonholonomic wheeled mobile robots,” IEEE/ASME Transactions on
+account the associated time-varying and orientation-dependent                                                                     mechatronics, vol. 8, no. 2, pp. 203–214, 2003.
+constraints. To this end, a worst-case approximation of the
+
